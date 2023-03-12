@@ -1,13 +1,13 @@
 package josscoder.jnpc.entity;
 
 import cn.nukkit.Player;
-import cn.nukkit.math.Vector3;
+import cn.nukkit.level.Location;
 
 public interface ISpawnable {
 
     void show(Player player);
 
-    void move(Vector3 vector3);
+    void move(Location location);
 
     void hide(Player player);
 

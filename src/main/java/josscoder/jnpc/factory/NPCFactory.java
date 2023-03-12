@@ -36,7 +36,7 @@ public class NPCFactory {
     }
 
     public List<NPC> filterByLevel(Level level) {
-        return filter(npc -> npc.getAttributeSettings().getLevel().equals(level));
+        return filter(npc -> npc.getAttributeSettings().getLocation().getLevel().equals(level));
     }
 
     public void hideLevelNPCS(Level level, Player player) {
