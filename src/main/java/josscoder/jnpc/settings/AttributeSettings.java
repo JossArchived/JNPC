@@ -16,6 +16,11 @@ public class AttributeSettings {
     private int networkId;
 
     @Builder.Default
+    private boolean customEntity = false;
+
+    private String minecraftIdentifier;
+
+    @Builder.Default
     private Location location = new Location(0, 100, 0);
 
     @Builder.Default

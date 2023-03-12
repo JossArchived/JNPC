@@ -7,11 +7,13 @@ import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.level.Location;
 import cn.nukkit.network.protocol.*;
+import com.google.common.collect.ImmutableMap;
 import josscoder.jnpc.exception.NPCException;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import lombok.Getter;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 @Getter
@@ -24,8 +26,32 @@ public abstract class Spawnable implements ISpawnable {
     protected long entityId;
     protected Set<EntityMetadata> mergedMetadataList = new HashSet<>();
 
+    @SuppressWarnings("unchecked")
     public Spawnable(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
         this.attributeSettings = attributeSettings;
+
+        int networkId = attributeSettings.getNetworkId();
+        if (!AddEntityPacket.LEGACY_IDS.containsKey(networkId)) {
+            if (attributeSettings.isCustomEntity()) {
+                try {
+                    Class<AddEntityPacket> addEntityPacketClass = AddEntityPacket.class;
+                    Field legacyIdsField = addEntityPacketClass.getField("LEGACY_IDS");
+                    legacyIdsField.setAccessible(true);
+
+                    Map<Integer, String> legacyIds = new HashMap<>((ImmutableMap<Integer, String>) legacyIdsField.get(null));
+                    legacyIds.put(networkId, attributeSettings.getMinecraftIdentifier());
+
+                    ImmutableMap<Integer, String> immutableMap = ImmutableMap.copyOf(legacyIds);
+
+                    legacyIdsField.set(new AddEntityPacket(), immutableMap);
+                    System.out.println(AddEntityPacket.LEGACY_IDS);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new NPCException("Error adding new NETWORK_ID: " + e);
+                }
+            } else {
+                throw new NPCException("That NETWORK_ID does not exist, if you are using custom entities, put attributeSettings.customEntity(true)");
+            }
+        }
 
         if (isHuman() && humanSettings == null) {
             throw new NPCException("humanSettings cannot be null when you are spawning a human npc");
@@ -54,6 +80,7 @@ public abstract class Spawnable implements ISpawnable {
         mergedMetadataList.addAll(metadataList);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Player player) {
         UUID uuid = UUID.randomUUID();

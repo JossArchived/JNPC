@@ -19,12 +19,12 @@ public class NPCSkinUtils {
             throw new NPCException("Invalid Skin Data");
         }
 
-        BufferedImage skinData = null;
+        BufferedImage skinData;
 
         try {
             skinData = ImageIO.read(skinPath.toFile());
         } catch (IOException e) {
-            System.out.println("Invalid Skin");
+            throw new NPCException("Invalid Skin Data: " +  e.getMessage());
         }
 
         skin.setSkinData(skinData);
