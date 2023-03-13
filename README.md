@@ -300,6 +300,8 @@ public class JNPCTest extends PluginBase {
                 .addLine(new Line("&eSub header")) //normal line
                 .addLine(new Line("&o&7Footer")) //normal line
                 .adjust(); //ajust lines
+
+        npc.getTagSettings().getLine(0).rename("&bNew First"); //rename, Maybe this is good for player counters in game npcs!
     }
 }
 ```
