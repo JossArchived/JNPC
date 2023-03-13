@@ -2,10 +2,10 @@
 <img src="https://github.com/Josscoder/JNPC/blob/master/.github/assets/logo.png" height="64" width="64" align="left" alt="">
 </h1>
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/example.png)
-
 ## 📙 Description
 Library to manage npcs on your Nukkit server
+
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/example.png)
 
 # 📖 Features
 
@@ -35,9 +35,83 @@ Maven:
     <version>1.0.0</version>
 </dependency>
 ```
-## 
+
+### Setup
 ```java
+import cn.nukkit.plugin.PluginBase;
+import josscoder.jnpc.JNPC;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+    }
+}
 ```
+
+### Build a Normal NPC
+```java
+import cn.nukkit.plugin.PluginBase;
+import josscoder.jnpc.JNPC;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+    }
+}
+```
+
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/test1.png)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/actions.png)
+
+### Build a Custom NPC
+```java
+import cn.nukkit.plugin.PluginBase;
+import josscoder.jnpc.JNPC;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+    }
+}
+```
+
+### Add line to NPC Tag
+```java
+import cn.nukkit.plugin.PluginBase;
+import josscoder.jnpc.JNPC;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+    }
+}
+```
+
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/edit.png)
+
+### Rename line from NPC tag
+```java
+import cn.nukkit.plugin.PluginBase;
+import josscoder.jnpc.JNPC;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+    }
+}
+```
+
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/final.png)
 
 ### Special thanks to my friends Brayan and Jose Luis for helping me with 3d entity support
 
