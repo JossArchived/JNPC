@@ -64,8 +64,8 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/test1.png)
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/actions.png)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/test1.jpeg)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/actions.jpeg)
 
 ### Build a Custom NPC
 ```java
@@ -95,7 +95,7 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/edit.png)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/edit.jpeg)
 
 ### Rename line from NPC tag
 ```java
@@ -111,7 +111,7 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/final.png)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/final.jpeg)
 
 ### Special thanks to my friends Brayan and Jose Luis for helping me with 3d entity support
 
