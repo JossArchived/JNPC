@@ -7,6 +7,7 @@ Library to manage npcs on your Nukkit server
 
 ![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/example.png)
 
+
 # 📖 Features
 
 - [x] Spawn any entity in minecraft
