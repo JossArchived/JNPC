@@ -33,7 +33,7 @@ public class Line extends Spawnable {
         this.separator = separator;
     }
 
-    public void update(String name) {
+    public void rename(String name) {
         SetEntityDataPacket packet = new SetEntityDataPacket();
         packet.eid = entityId;
         packet.metadata = new EntityMetadata().putString(Entity.DATA_NAMETAG, TextFormat.colorize(name));
