@@ -78,8 +78,6 @@ public abstract class Spawnable implements ISpawnable {
                     idlist.add(nbtEntry);
                     nbtFile.putList(idlist);
 
-                    System.out.println(nbtFile);
-
                     byte[] bytesToWrite = NBTIO.write(nbtFile, ByteOrder.BIG_ENDIAN, true);
 
                     //MODIFY TAG of AvailableEntityIdentifiersPacket with new bytes
