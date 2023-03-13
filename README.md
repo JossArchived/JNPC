@@ -81,6 +81,8 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/img.jpeg)
+
 ### Add line to NPC Tag
 ```java
 import cn.nukkit.plugin.PluginBase;
