@@ -81,7 +81,7 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/img.jpeg)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/img.png)
 
 ### Add line to NPC Tag
 ```java
