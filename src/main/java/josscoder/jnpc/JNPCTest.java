@@ -1,6 +1,5 @@
 package josscoder.jnpc;
 
-import cn.nukkit.entity.passive.EntityVillager;
 import cn.nukkit.event.Listener;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
@@ -18,8 +17,7 @@ public class JNPCTest extends PluginBase implements Listener {
 
         NPC npc = NPC.create(AttributeSettings.builder()
                 .customEntity(true)
-                .networkId(250)
-                .minecraftIdentifier("my_custom:entitie")
+                .minecraftId("clover:selectors_npc")
                 .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
                 .controller(player -> player.sendMessage(TextFormat.colorize("&bSending you tu SkyWars...")))
                 .build());

@@ -1,19 +1,27 @@
 package josscoder.jnpc.entity;
 
+import cn.nukkit.Nukkit;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.level.Location;
+import cn.nukkit.nbt.NBTIO;
+import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.*;
 import com.google.common.collect.ImmutableMap;
 import josscoder.jnpc.exception.NPCException;
+import josscoder.jnpc.factory.NPCFactory;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import lombok.Getter;
 
+import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.nio.ByteOrder;
 import java.util.*;
 
 @Getter
@@ -31,21 +39,59 @@ public abstract class Spawnable implements ISpawnable {
         this.attributeSettings = attributeSettings;
 
         int networkId = attributeSettings.getNetworkId();
+        if (networkId == 0) {
+            int newRuntimeId = NPCFactory.getInstance().getCurrentRuntimeId();
+            attributeSettings.setNetworkId(newRuntimeId);
+            networkId = newRuntimeId;
+        }
+
         if (!AddEntityPacket.LEGACY_IDS.containsKey(networkId)) {
             if (attributeSettings.isCustomEntity()) {
+                String minecraftId = attributeSettings.getMinecraftId();
+
                 try {
+                    //MODIFY AddEntityPacket to support new entity
+
                     Class<AddEntityPacket> addEntityPacketClass = AddEntityPacket.class;
                     Field legacyIdsField = addEntityPacketClass.getField("LEGACY_IDS");
                     legacyIdsField.setAccessible(true);
 
                     Map<Integer, String> legacyIds = new HashMap<>((ImmutableMap<Integer, String>) legacyIdsField.get(null));
-                    legacyIds.put(networkId, attributeSettings.getMinecraftIdentifier());
+                    legacyIds.put(networkId, minecraftId);
 
                     ImmutableMap<Integer, String> immutableMap = ImmutableMap.copyOf(legacyIds);
 
                     legacyIdsField.set(new AddEntityPacket(), immutableMap);
-                    System.out.println(AddEntityPacket.LEGACY_IDS);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
+
+                    //get entity_identifiers.dat bytes and add new entity
+
+                    InputStream inputStream = Nukkit.class.getClassLoader().getResourceAsStream("entity_identifiers.dat");
+                    CompoundTag nbtFile = NBTIO.read(inputStream, ByteOrder.BIG_ENDIAN, true);
+                    ListTag<CompoundTag> idlist = nbtFile.getList("idlist", CompoundTag.class);
+
+                    CompoundTag nbtEntry = new CompoundTag();
+                    nbtEntry.putBoolean("hasspawnegg", false)
+                            .putBoolean("summonable", false)
+                            .putString("id", minecraftId)
+                            .putString("bid", minecraftId)
+                            .putInt("rid", networkId);
+                    idlist.add(nbtEntry);
+                    nbtFile.putList(idlist);
+
+                    System.out.println(nbtFile);
+
+                    byte[] bytesToWrite = NBTIO.write(nbtFile, ByteOrder.BIG_ENDIAN, true);
+
+                    //MODIFY TAG of AvailableEntityIdentifiersPacket with new bytes
+                    Class<AvailableEntityIdentifiersPacket> availableEntityIdentifiersPacketClass = AvailableEntityIdentifiersPacket.class;
+                    Field tagField = availableEntityIdentifiersPacketClass.getDeclaredField("TAG");
+                    tagField.setAccessible(true);
+                    Field modifiersField = Field.class.getDeclaredField("modifiers");
+                    modifiersField.setAccessible(true);
+                    modifiersField.setInt(tagField, tagField.getModifiers() & ~Modifier.FINAL);
+                    tagField.set(null, bytesToWrite);
+
+                } catch (NoSuchFieldException | IllegalAccessException | IOException e) {
                     throw new NPCException("Error adding new NETWORK_ID: " + e);
                 }
             } else {
@@ -80,7 +126,6 @@ public abstract class Spawnable implements ISpawnable {
         mergedMetadataList.addAll(metadataList);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void show(Player player) {
         UUID uuid = UUID.randomUUID();

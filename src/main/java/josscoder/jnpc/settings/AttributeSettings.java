@@ -18,7 +18,7 @@ public class AttributeSettings {
     @Builder.Default
     private boolean customEntity = false;
 
-    private String minecraftIdentifier;
+    private String minecraftId;
 
     @Builder.Default
     private Location location = new Location(0, 100, 0);
