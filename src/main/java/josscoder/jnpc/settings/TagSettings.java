@@ -30,7 +30,7 @@ public class TagSettings {
         return lines.get(index);
     }
 
-    public void build() {
+    public void adjust() {
         AtomicInteger index = new AtomicInteger(0);
 
         Collections.reverse(lines);

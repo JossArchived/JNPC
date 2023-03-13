@@ -5,9 +5,6 @@
 ## 📙 Description
 Library to manage npcs on your Nukkit server
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/example.png)
-
-
 # 📖 Features
 
 - [x] Spawn any entity in minecraft
@@ -51,17 +48,92 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-### Build a Normal NPC
-
+### Build a normal NPC
 ```java
-import cn.nukkit.entity.EntityHuman;
-import cn.nukkit.entity.mob.EntityCreeper;
-import cn.nukkit.entity.mob.EntityMagmaCube;
-import cn.nukkit.item.ItemBed;
+package josscoder.jnpc;
+
+import cn.nukkit.entity.mob.EntityEnderDragon;
+import cn.nukkit.entity.passive.EntitySheep;
+import cn.nukkit.event.Listener;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.JNPC;
+import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.settings.AttributeSettings;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+
+        NPC.create(AttributeSettings.builder()
+                .networkId(EntitySheep.NETWORK_ID)
+                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
+                .controller((npc, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + npc.getEntityId())))
+                .build());
+    }
+}
+```
+
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/1.png)
+
+### Build a human NPC
+Well, there are 3 ways, getting the skin from the player, getting the skin with our NPCSkinUtils class /
+and/or obtaining a skin with geometry and texture with the same class, let's see:
+
+#### Way #1
+```java
+package josscoder.jnpc;
+
+import cn.nukkit.entity.EntityHuman;
+import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.Listener;
+import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.item.ItemEndCrystal;
+import cn.nukkit.level.Location;
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
+import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.settings.AttributeSettings;
+import josscoder.jnpc.settings.HumanAttributes;
+
+public class JNPCTest extends PluginBase implements Listener {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    @EventHandler
+    private void onJoin(PlayerJoinEvent event) {
+        HumanAttributes humanAttributes = HumanAttributes.builder()
+                .skin(event.getPlayer().getSkin())
+                .handItem(new ItemEndCrystal())
+                .build();
+
+        NPC.create(AttributeSettings.builder()
+                .networkId(EntityHuman.NETWORK_ID)
+                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
+                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
+                .build(),
+                humanAttributes
+        );
+    }
+}
+```
+
+#### Way #2
+```java
+package josscoder.jnpc;
+
+import cn.nukkit.entity.EntityHuman;
+import cn.nukkit.event.Listener;
+import cn.nukkit.item.ItemEndCrystal;
+import cn.nukkit.level.Location;
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
 import josscoder.jnpc.entity.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
@@ -75,48 +147,33 @@ public class JNPCTest extends PluginBase {
     public void onEnable() {
         JNPC.init(this);
 
-        //human
-        NPC npc = NPC.create(AttributeSettings.builder()
+        HumanAttributes humanAttributes = HumanAttributes.builder()
+                .skin(NPCSkinUtils.from(new File(getDataFolder() + "/skins/").toPath().resolve("mySKin.png"))) //normal skin
+                .handItem(new ItemEndCrystal())
+                .build();
+
+        NPC.create(AttributeSettings.builder()
                         .networkId(EntityHuman.NETWORK_ID)
                         .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                        .controller(player -> player.sendMessage(TextFormat.colorize("&bSending you tu SkyWars...")))
+                        .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
                         .build(),
-                HumanAttributes.builder()
-                        .skin(NPCSkinUtils.from(new File(getDataFolder() + "/skins/").toPath().resolve("mySKin.png")))
-                        .handItem(new ItemBed())
-                        .build());
-
-        //creeper
-        NPC creeper = NPC.create(AttributeSettings.builder()
-                .networkId(EntityCreeper.NETWORK_ID)
-                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                .controller(player -> player.sendMessage(TextFormat.colorize("&bSending you tu SkyWars...")))
-                .build());
-
-        //entity with weight diff
-
-        NPC magma = NPC.create(AttributeSettings.builder()
-                .networkId(EntityMagmaCube.NETWORK_ID)
-                .boundingBoxHeight(0.5f) //adjust tag to size
-                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                .controller(player -> player.sendMessage(TextFormat.colorize("&bSending you tu SkyWars...")))
-                .build());
+                humanAttributes
+        );
     }
 }
-
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/test1.jpeg)
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/actions.jpeg)
-
-### Build a Custom NPC
+#### Way #3
 ```java
+package josscoder.jnpc;
+
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.entity.data.Skin;
+import cn.nukkit.event.Listener;
+import cn.nukkit.item.ItemEndCrystal;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.JNPC;
 import josscoder.jnpc.entity.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
@@ -131,40 +188,97 @@ public class JNPCTest extends PluginBase {
     public void onEnable() {
         JNPC.init(this);
 
-        NPC wayOne = NPC.create(AttributeSettings.builder()
-                .customEntity(true) //mark this as true
-                .minecraftId("clover:selectors_npc") //entity identifier
-                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                .controller(player -> player.sendMessage(TextFormat.colorize("&bSending you tu SkyWars...")))
-                .build());
-
         Path path = new File(getDataFolder() + "/skins/").toPath();
         Skin skinWithGeo = NPCSkinUtils.from(path.resolve("mySKin.png"), path.resolve("geo.json"), "custom.geo.skin");
 
-        NPC wayTwo = NPC.create(AttributeSettings.builder()
+        HumanAttributes humanAttributes = HumanAttributes.builder()
+                .skin(skinWithGeo) // texture with geometry way #1
+                .handItem(new ItemEndCrystal())
+                .build();
+
+        NPC.create(AttributeSettings.builder()
                         .networkId(EntityHuman.NETWORK_ID)
                         .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                        .controller(player -> player.sendMessage(TextFormat.colorize("&bSending you tu SkyWars...")))
+                        .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
                         .build(),
-                HumanAttributes.builder()
-                        .skin(skinWithGeo)
-                        .build());
+                humanAttributes
+        );
     }
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/img.png)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/5.png)
 
-### Add line to NPC Tag
+### How to use controller (when click a NPC)
+
 ```java
+package josscoder.jnpc;
+
+import cn.nukkit.entity.EntityHuman;
+import cn.nukkit.entity.mob.EntityEnderman;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.JNPC;
+import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.settings.AttributeSettings;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+
+        NPC.create(AttributeSettings.builder()
+                .networkId(EntityEnderman.NETWORK_ID)
+                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
+                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId()))) // here will send a message when the player clicking the NPC
+                .build()
+        );
+    }
+}
+```
+
+### Build a 3d NPC from TexturePack
+
+```java
+package josscoder.jnpc;
+
+import cn.nukkit.level.Location;
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
+import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.settings.AttributeSettings;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+
+        NPC.create(AttributeSettings.builder()
+                .customEntity(true)
+                .minecraftId("clover:ffa_npc")
+                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
+                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
+                .build()
+        );
+    }
+}
+```
+
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/6.png)
+
+### How to use the tag and lines
+
+```java
+package josscoder.jnpc;
+
+import cn.nukkit.level.Location;
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
 import josscoder.jnpc.entity.Line;
 import josscoder.jnpc.entity.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
-import josscoder.jnpc.settings.TagSettings;
 
 public class JNPCTest extends PluginBase {
 
@@ -174,35 +288,37 @@ public class JNPCTest extends PluginBase {
 
         NPC npc = NPC.create(AttributeSettings.builder()
                 .customEntity(true)
-                .minecraftId("clover:selectors_npc")
+                .minecraftId("clover:ffa_npc")
+                .boundingBoxHeight(2f)
                 .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                .controller(player -> player.sendMessage(TextFormat.colorize("&bSending you tu SkyWars...")))
-                .build());
+                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
+                .build()
+        );
 
-        TagSettings tagSettings = npc.getTagSettings();
-        tagSettings
-                .addLine(new Line("&d&lNEW!", 2)) //with separator
-                .addLine(new Line("&e&lSkyWars"))
-                .addLine(new Line("&70 Playing"))
-                .addLine(new Line("&aCLICK TO PLAY"))
-                .build();
+        npc.getTagSettings()
+                .addLine(new Line("&d&lFirst Header", 2)) //line with spaces
+                .addLine(new Line("&eSub header")) //normal line
+                .addLine(new Line("&o&7Footer")) //normal line
+                .adjust(); //ajust lines
     }
 }
-
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/edit.jpeg)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/7.png)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/8.png)
 
-### Rename line from NPC tag
+### Play with the sizes
 ```java
+package josscoder.jnpc;
+
+import cn.nukkit.entity.mob.EntitySlime;
+import cn.nukkit.event.Listener;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.JNPC;
 import josscoder.jnpc.entity.Line;
 import josscoder.jnpc.entity.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
-import josscoder.jnpc.settings.TagSettings;
 
 public class JNPCTest extends PluginBase {
 
@@ -211,27 +327,92 @@ public class JNPCTest extends PluginBase {
         JNPC.init(this);
 
         NPC npc = NPC.create(AttributeSettings.builder()
-                .customEntity(true)
-                .minecraftId("clover:selectors_npc")
+                .networkId(EntitySlime.NETWORK_ID)
                 .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                .controller(player -> player.sendMessage(TextFormat.colorize("&bSending you tu SkyWars...")))
+                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
                 .build());
 
-        TagSettings tagSettings = npc.getTagSettings();
-        tagSettings
-                .addLine(new Line("&d&lNEW!", 2)) //with separator
-                .addLine(new Line("&e&lSkyWars"))
-                .addLine(new Line("&70 Playing"))
-                .addLine(new Line("&aCLICK TO PLAY"))
-                .build();
-
-        tagSettings.getLine(0).rename("&c&lOLD!"); //change new to old
+        npc.getTagSettings()
+                .addLine(new Line("&d&lFirst Header", 2))
+                .addLine(new Line("&eSub header"))
+                .addLine(new Line("&o&7Footer"))
+                .adjust();
     }
 }
-
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/final.jpeg)
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/2.png)
+
+As we can see the slime is very small and the tag is very high, we have the solution for it:
+
+```java
+package josscoder.jnpc;
+
+import cn.nukkit.entity.mob.EntitySlime;
+import cn.nukkit.event.Listener;
+import cn.nukkit.level.Location;
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
+import josscoder.jnpc.entity.Line;
+import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.settings.AttributeSettings;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+
+        NPC npc = NPC.create(AttributeSettings.builder()
+                .networkId(EntitySlime.NETWORK_ID)
+                .boundingBoxHeight(0.5f) //Here!
+                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
+                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
+                .build());
+
+        npc.getTagSettings()
+                .addLine(new Line("&d&lFirst Header", 2))
+                .addLine(new Line("&eSub header"))
+                .addLine(new Line("&o&7Footer"))
+                .adjust();
+    }
+}
+```
+
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/3.png)
+*Wow, now it works great!* 
+
+### The legends were true... there are giant zombies!
+
+![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/4.png)
+
+But... how did you do it? Simple, this way:
+```java
+package josscoder.jnpc;
+
+import cn.nukkit.entity.mob.EntityZombie;
+import cn.nukkit.event.Listener;
+import cn.nukkit.level.Location;
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
+import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.settings.AttributeSettings;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+
+        NPC.create(AttributeSettings.builder()
+                .networkId(EntityZombie.NETWORK_ID)
+                .scale(10f) //Here!
+                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
+                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
+                .build());
+    }
+}
+```
 
 ### Special thanks to my friends Brayan and Jose Luis for helping me with 3d entity support
 

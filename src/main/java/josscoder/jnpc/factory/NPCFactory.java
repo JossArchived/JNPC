@@ -60,11 +60,13 @@ public class NPCFactory {
             return;
         }
 
-        NPCController controller = npcToHandle.get().getAttributeSettings().getController();
+        NPC npc = npcToHandle.get();
+
+        NPCController controller = npc.getAttributeSettings().getController();
         if (controller == null) {
             return;
         }
 
-        controller.handle(player);
+        controller.handle(npc, player);
     }
 }

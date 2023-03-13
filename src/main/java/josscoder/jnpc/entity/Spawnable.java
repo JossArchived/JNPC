@@ -45,7 +45,7 @@ public abstract class Spawnable implements ISpawnable {
             networkId = newRuntimeId;
         }
 
-        if (!AddEntityPacket.LEGACY_IDS.containsKey(networkId)) {
+        if (!isHuman() && !AddEntityPacket.LEGACY_IDS.containsKey(networkId)) {
             if (attributeSettings.isCustomEntity()) {
                 String minecraftId = attributeSettings.getMinecraftId();
 
@@ -95,10 +95,6 @@ public abstract class Spawnable implements ISpawnable {
             } else {
                 throw new NPCException("That NETWORK_ID does not exist, if you are using custom entities, put attributeSettings.customEntity(true)");
             }
-        }
-
-        if (isHuman() && humanSettings == null) {
-            throw new NPCException("humanSettings cannot be null when you are spawning a human npc");
         }
 
         this.humanSettings = humanSettings;

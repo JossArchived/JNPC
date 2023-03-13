@@ -30,5 +30,5 @@ public class AttributeSettings {
     private float boundingBoxHeight = 1.8f;
 
     @Builder.Default
-    private NPCController controller = player -> player.sendMessage("Hello world!");
+    private NPCController controller = (npc, player) -> player.sendMessage("Hello world!");
 }
