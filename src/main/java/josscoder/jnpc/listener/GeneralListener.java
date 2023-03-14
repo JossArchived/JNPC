@@ -8,11 +8,13 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityLevelChangeEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.inventory.transaction.data.TransactionData;
 import cn.nukkit.inventory.transaction.data.UseItemOnEntityData;
 import cn.nukkit.level.Level;
+import cn.nukkit.level.Location;
 import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.InventoryTransactionPacket;
 import josscoder.jnpc.factory.NPCFactory;
@@ -78,5 +80,15 @@ public class GeneralListener implements Listener {
         }
 
         NPCFactory.getInstance().handleClickNPC(((UseItemOnEntityData) data).entityRuntimeId, event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void onMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        Location location = event.getTo();
+
+        NPCFactory.getInstance().filterByLevel(location.getLevel())
+                .stream().filter(npc -> npc.getAttributeSettings().isKeepLooking())
+                .forEach(npc -> npc.lookAt(player.getLocation().asVector3f().asVector3(), true));
     }
 }

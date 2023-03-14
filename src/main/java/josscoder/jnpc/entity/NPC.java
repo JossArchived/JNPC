@@ -68,6 +68,12 @@ public class NPC extends Spawnable {
         hideLines(player);
     }
 
+    @Override
+    public void move(Location location) {
+        super.move(location);
+        reloadLines();
+    }
+
     public void spawnLines(Player player) {
         tagSettings.getLines().forEach(line -> line.show(player));
     }

@@ -31,4 +31,7 @@ public class AttributeSettings {
 
     @Builder.Default
     private NPCController controller = (npc, player) -> player.sendMessage("Hello world!");
+
+    @Builder.Default
+    private boolean keepLooking = false;
 }

@@ -202,7 +202,7 @@ public abstract class Spawnable implements ISpawnable {
         MoveEntityAbsolutePacket packet = new MoveEntityAbsolutePacket();
         packet.eid = entityId;
         packet.forceMoveLocalEntity = true;
-        packet.onGround = true;
+        packet.onGround = false;
         packet.teleport = true;
         packet.x = location.getX();
         packet.y = location.getY();

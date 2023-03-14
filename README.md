@@ -13,6 +13,7 @@ Library to manage npcs on your Nukkit server
 - [x] 3D entities with animations
 - [x] Click interaction
 - [x] Simple API
+- [x] Entity rotation
 - [ ] Emote support for Human Entities
 - [ ] Paths to walk
 
@@ -414,6 +415,44 @@ public class JNPCTest extends PluginBase {
                 .build());
     }
 }
+```
+
+### Follow player with the look (keepLooking)
+```java
+package josscoder.jnpc;
+
+import cn.nukkit.entity.mob.EntityCreeper;
+import cn.nukkit.level.Location;
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
+import josscoder.jnpc.entity.Line;
+import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.settings.AttributeSettings;
+import josscoder.jnpc.settings.TagSettings;
+
+public class JNPCTest extends PluginBase {
+
+    @Override
+    public void onEnable() {
+        JNPC.init(this);
+
+        NPC npc = NPC.create(AttributeSettings.builder()
+                .networkId(EntityCreeper.NETWORK_ID)
+                .keepLooking(true) //Here!
+                .scale(2)
+                .boundingBoxHeight(3f)
+                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
+                .controller((clickedNPC, player) -> player.sendMessage("Mineplex is better than josscodercraft"))
+                .build());
+
+        TagSettings tagSettings = npc.getTagSettings();
+        tagSettings
+                .addLine(new Line("&a&lKarl the creeper"))
+                .addLine(new Line("&o&7Click to receive love!"))
+                .adjust();
+    }
+}
+
 ```
 
 ### Special thanks to my friends Brayan and Jose Luis for helping me with 3d entity support
