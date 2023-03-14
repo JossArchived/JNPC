@@ -1,6 +1,0 @@
-name: JNPC
-main: josscoder.jnpc.JNPCTest
-api: 1.0.0
-version: ${project.version}
-author: Josscoder
-load: POSTWORLD
