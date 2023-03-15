@@ -1,4 +1,4 @@
-package josscoder.jnpc.entity;
+package josscoder.jnpc.npc;
 
 import cn.nukkit.Nukkit;
 import cn.nukkit.Player;
@@ -30,7 +30,7 @@ public abstract class Spawnable implements ISpawnable {
 
     protected final AttributeSettings attributeSettings;
     protected final HumanAttributes humanSettings;
-    protected final List<Player> playerList = new ArrayList<>();
+    protected final List<Player> viewerList = new ArrayList<>();
 
     protected long entityId;
     protected Set<EntityMetadata> mergedMetadataList = new HashSet<>();
@@ -128,7 +128,7 @@ public abstract class Spawnable implements ISpawnable {
             packet.eid = entityId;
             packet.metadata = metadata;
             packet.frame = 0;
-            playerList.forEach(player -> player.dataPacket(packet));
+            viewerList.forEach(player -> player.dataPacket(packet));
         });
         mergedMetadataList.addAll(metadataList);
     }
@@ -144,17 +144,17 @@ public abstract class Spawnable implements ISpawnable {
         metadata.putLong(Entity.DATA_LEAD_HOLDER_EID, -1);
         metadata.putFloat(Entity.DATA_SCALE, attributeSettings.getScale());
 
-        this.mergedMetadataList.forEach(mergedMetadata -> mergedMetadata.getMap().values().forEach((metadata::put)));
+        mergedMetadataList.forEach(mergedMetadata -> mergedMetadata.getMap().values().forEach((metadata::put)));
 
         if (isHuman()) {
             Skin skin = humanSettings.getSkin();
 
-            PlayerListPacket playerListAdd = new PlayerListPacket();
-            playerListAdd.type = PlayerListPacket.TYPE_ADD;
-            playerListAdd.entries = new PlayerListPacket.Entry[]{
+            PlayerListPacket playerListAddPacket = new PlayerListPacket();
+            playerListAddPacket.type = PlayerListPacket.TYPE_ADD;
+            playerListAddPacket.entries = new PlayerListPacket.Entry[]{
                     new PlayerListPacket.Entry(uuid, entityId, uuid.toString(), skin)
             };
-            player.dataPacket(playerListAdd);
+            player.dataPacket(playerListAddPacket);
 
             AddPlayerPacket packet = new AddPlayerPacket();
             packet.username = "";
@@ -181,12 +181,13 @@ public abstract class Spawnable implements ISpawnable {
             skinPacket.uuid = uuid;
             player.dataPacket(skinPacket);
 
-            PlayerListPacket playerListRemove = new PlayerListPacket();
-            playerListRemove.type = PlayerListPacket.TYPE_REMOVE;
-            playerListRemove.entries = new PlayerListPacket.Entry[]{
+            PlayerListPacket playerListRemovePacket = new PlayerListPacket();
+            playerListRemovePacket.type = PlayerListPacket.TYPE_REMOVE;
+            playerListRemovePacket.entries = new PlayerListPacket.Entry[]{
                     new PlayerListPacket.Entry(uuid)
             };
-            player.dataPacket(playerListRemove);
+            player.dataPacket(playerListRemovePacket);
+
         } else {
             AddEntityPacket packet = new AddEntityPacket();
             packet.type = attributeSettings.getNetworkId();
@@ -205,8 +206,8 @@ public abstract class Spawnable implements ISpawnable {
             player.dataPacket(packet);
         }
 
-        if (!playerList.contains(player)) {
-            playerList.add(player);
+        if (!viewerList.contains(player)) {
+            viewerList.add(player);
         }
     }
 
@@ -226,7 +227,7 @@ public abstract class Spawnable implements ISpawnable {
 
         attributeSettings.setLocation(location);
 
-        playerList.forEach(player -> {
+        viewerList.forEach(player -> {
             if (player != null) {
                 player.dataPacket(packet);
             }
@@ -239,6 +240,6 @@ public abstract class Spawnable implements ISpawnable {
         packet.eid = entityId;
         player.dataPacket(packet);
 
-        playerList.remove(player);
+        viewerList.remove(player);
     }
 }

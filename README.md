@@ -58,13 +58,11 @@ public class JNPCTest extends PluginBase {
 ```java
 package josscoder.jnpc;
 
-import cn.nukkit.entity.mob.EntityEnderDragon;
 import cn.nukkit.entity.passive.EntitySheep;
-import cn.nukkit.event.Listener;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -102,7 +100,7 @@ import cn.nukkit.item.ItemEndCrystal;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 
@@ -138,12 +136,11 @@ public class JNPCTest extends PluginBase implements Listener {
 package josscoder.jnpc;
 
 import cn.nukkit.entity.EntityHuman;
-import cn.nukkit.event.Listener;
 import cn.nukkit.item.ItemEndCrystal;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import josscoder.jnpc.utils.NPCSkinUtils;
@@ -179,12 +176,11 @@ package josscoder.jnpc;
 
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.entity.data.Skin;
-import cn.nukkit.event.Listener;
 import cn.nukkit.item.ItemEndCrystal;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import josscoder.jnpc.utils.NPCSkinUtils;
@@ -224,12 +220,11 @@ public class JNPCTest extends PluginBase {
 ```java
 package josscoder.jnpc;
 
-import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.entity.mob.EntityEnderman;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -256,7 +251,7 @@ package josscoder.jnpc;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -286,8 +281,8 @@ package josscoder.jnpc;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.Line;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.Line;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -325,12 +320,11 @@ public class JNPCTest extends PluginBase {
 package josscoder.jnpc;
 
 import cn.nukkit.entity.mob.EntitySlime;
-import cn.nukkit.event.Listener;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.Line;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.Line;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -362,12 +356,11 @@ As we can see the slime is very small and the tag is very high, we have the solu
 package josscoder.jnpc;
 
 import cn.nukkit.entity.mob.EntitySlime;
-import cn.nukkit.event.Listener;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.Line;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.Line;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -405,11 +398,10 @@ But... how did you do it? Simple, this way:
 package josscoder.jnpc;
 
 import cn.nukkit.entity.mob.EntityZombie;
-import cn.nukkit.event.Listener;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -436,9 +428,8 @@ package josscoder.jnpc;
 import cn.nukkit.entity.mob.EntityCreeper;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.entity.Line;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.Line;
+import josscoder.jnpc.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.TagSettings;
 

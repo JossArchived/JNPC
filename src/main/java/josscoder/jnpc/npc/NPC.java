@@ -1,4 +1,4 @@
-package josscoder.jnpc.entity;
+package josscoder.jnpc.npc;
 
 import cn.nukkit.Player;
 import cn.nukkit.level.Location;
@@ -13,11 +13,9 @@ import lombok.Getter;
 public class NPC extends Spawnable {
 
     private final TagSettings tagSettings;
-    private final HumanAttributes humanSettings;
 
     private NPC(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
         super(attributeSettings, humanSettings);
-        this.humanSettings = humanSettings;
 
         this.tagSettings = new TagSettings();
         this.tagSettings.setLinkedNPC(this);
@@ -27,7 +25,7 @@ public class NPC extends Spawnable {
      * Action to create the new entities
      *
      * @param attributeSettings entity attributes
-     * @param humanSettings     the attributes of the human
+     * @param humanSettings the attributes of the entity human
      * @return the NPC
      */
     public static NPC create(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
@@ -94,15 +92,30 @@ public class NPC extends Spawnable {
 
     @Override
     public void move(Location location) {
+        Location oldLocation = attributeSettings.getLocation();
+
         super.move(location);
-        reloadLines();
+
+        if (location.getX() != oldLocation.getX() || location.getY() != oldLocation.getY() || location.getZ() != oldLocation.getZ()) {
+            tagSettings.readjust(location);
+        }
     }
 
-    private void spawnLines(Player player) {
+    /**
+     * Action to display all lines to player
+     *
+     * @param player player to whom the tag is shown
+     */
+    public void spawnLines(Player player) {
         tagSettings.getLines().forEach(line -> line.show(player));
     }
 
-    private void hideLines(Player player) {
+    /**
+     * Action to hide all lines from player
+     *
+     * @param player player to whom the tag is hide
+     */
+    public void hideLines(Player player) {
         tagSettings.getLines().forEach(line -> line.hide(player));
     }
 
@@ -110,7 +123,7 @@ public class NPC extends Spawnable {
      * Action to reload all lines of the tag
      */
     public void reloadLines() {
-        playerList.forEach(player -> {
+        viewerList.forEach(player -> {
             hideLines(player);
             spawnLines(player);
         });

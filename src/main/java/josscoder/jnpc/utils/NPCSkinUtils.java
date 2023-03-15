@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class NPCSkinUtils {
 
@@ -72,6 +73,21 @@ public class NPCSkinUtils {
         skin.setSkinId("Standard_Custom");
         skin.setGeometryName(geometryName);
         skin.setGeometryData(geometry);
+        skin.setTrusted(true);
+
+        return skin;
+    }
+
+    public static Skin invisibleSkin() {
+        Skin skin = new Skin();
+
+        byte[] bytes = new byte[8192];
+        Arrays.fill(bytes, (byte) 0x00);
+
+        skin.setSkinData(bytes);
+        skin.setPremium(true);
+        skin.setSkinId("Standard_Custom");
+        skin.setGeometryName("geometry.humanoid.custom");
         skin.setTrusted(true);
 
         return skin;

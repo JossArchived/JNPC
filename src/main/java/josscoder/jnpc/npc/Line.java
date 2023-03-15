@@ -1,4 +1,4 @@
-package josscoder.jnpc.entity;
+package josscoder.jnpc.npc;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
@@ -9,8 +9,10 @@ import cn.nukkit.utils.TextFormat;
 import josscoder.jnpc.settings.AttributeSettings;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class Line extends Spawnable {
 
     private final String name;
@@ -30,11 +32,8 @@ public class Line extends Spawnable {
      * @param separator The amount of separation between this line and the next one
      */
     public Line(String name, int separator) {
-        super(AttributeSettings.builder()
-                        .networkId(EntityCreeper.NETWORK_ID)
-                        .build(),
-                null
-        );
+        super(AttributeSettings.builder().networkId(EntityCreeper.NETWORK_ID).build(), null);
+
         this.name = name;
         this.separator = separator;
     }
@@ -46,7 +45,11 @@ public class Line extends Spawnable {
         SetEntityDataPacket packet = new SetEntityDataPacket();
         packet.eid = entityId;
         packet.metadata = new EntityMetadata().putString(Entity.DATA_NAMETAG, TextFormat.colorize(name));
-        linkedNPC.getPlayerList().forEach(player -> player.dataPacket(packet));
+        linkedNPC.getViewerList().forEach(player -> {
+            if (player != null) {
+                player.dataPacket(packet);
+            }
+        });
     }
 
     @Override

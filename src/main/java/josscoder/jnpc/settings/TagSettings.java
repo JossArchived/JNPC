@@ -1,8 +1,8 @@
 package josscoder.jnpc.settings;
 
 import cn.nukkit.level.Location;
-import josscoder.jnpc.entity.Line;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.Line;
+import josscoder.jnpc.npc.NPC;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,6 +43,24 @@ public class TagSettings {
      */
     public Line getLine(int index) {
         return lines.get(index);
+    }
+
+    public void readjust(Location location) {
+        AtomicInteger index = new AtomicInteger(0);
+
+        lines.forEach(line -> {
+            Location lineLoc;
+
+            if (index.get() == 0) {
+                lineLoc = location.getLocation().add(0, linkedNPC.getAttributeSettings().getBoundingBoxHeight(), 0);
+            } else {
+                lineLoc = lines.get(index.get() - 1).getAttributeSettings().getLocation().add(0, (ONE_BREAK_LINE * line.getSeparator()), 0);
+            }
+
+            line.move(lineLoc);
+
+            index.addAndGet(1);
+        });
     }
 
     /**

@@ -1,5 +1,6 @@
 package josscoder.jnpc.settings;
 
+import cn.nukkit.Server;
 import cn.nukkit.level.Location;
 import josscoder.jnpc.controller.NPCController;
 import lombok.Builder;
@@ -39,7 +40,7 @@ public class AttributeSettings {
      * entity location x,y,z yaw, pitch, headYaw
      */
     @Builder.Default
-    private Location location = new Location(0, 100, 0);
+    private Location location = new Location(0, 100, 0, 100, 0, Server.getInstance().getDefaultLevel());
 
     /**
      * entity size

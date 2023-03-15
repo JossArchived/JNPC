@@ -3,7 +3,7 @@ package josscoder.jnpc.factory;
 import cn.nukkit.Player;
 import cn.nukkit.level.Level;
 import josscoder.jnpc.controller.NPCController;
-import josscoder.jnpc.entity.NPC;
+import josscoder.jnpc.npc.NPC;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class NPCFactory {
         filterByLevel(level).forEach(npc -> npc.show(player));
     }
 
-    public void handleClickNPC(long entityId, Player player) {
+    public void handleNPCController(long entityId, Player player) {
         Optional<NPC> npcToHandle = npcList.stream().filter(npc -> npc.getEntityId() == entityId).findFirst();
         if (!npcToHandle.isPresent()) {
             return;

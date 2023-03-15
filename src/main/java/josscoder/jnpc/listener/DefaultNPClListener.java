@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
-import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityLevelChangeEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
@@ -19,22 +18,25 @@ import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.InventoryTransactionPacket;
 import josscoder.jnpc.factory.NPCFactory;
 
-public class GeneralListener implements Listener {
+public class DefaultNPClListener implements NPCListener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    private void onJoin(PlayerJoinEvent event) {
+    @Override
+    public void onJoinHandleEntities(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         NPCFactory.getInstance().showLevelNPCS(player.getLevel(), player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    private void onQuit(PlayerQuitEvent event) {
+    @Override
+    public void onCleanupEntities(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         NPCFactory.getInstance().hideLevelNPCS(player.getLevel(), player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    private void onLevelChange(EntityLevelChangeEvent event) {
+    @Override
+    public void onLevelChangeHandleEntities(EntityLevelChangeEvent event) {
         Entity entity = event.getEntity();
         if (!(entity instanceof Player)) {
             return;
@@ -50,17 +52,19 @@ public class GeneralListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    private void onAttackEntity(EntityDamageByEntityEvent event) {
+    @Override
+    public void onLeftEntity(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
         if (!(damager instanceof Player)) {
             return;
         }
 
-        NPCFactory.getInstance().handleClickNPC(event.getEntity().getId(), (Player) damager);
+        NPCFactory.getInstance().handleNPCController(event.getEntity().getId(), (Player) damager);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    private void onClickEntity(DataPacketReceiveEvent event) {
+    @Override
+    public void onRightEntity(DataPacketReceiveEvent event) {
         DataPacket packet = event.getPacket();
         if (!(packet instanceof InventoryTransactionPacket)) {
             return;
@@ -79,11 +83,12 @@ public class GeneralListener implements Listener {
             return;
         }
 
-        NPCFactory.getInstance().handleClickNPC(((UseItemOnEntityData) data).entityRuntimeId, event.getPlayer());
+        NPCFactory.getInstance().handleNPCController(((UseItemOnEntityData) data).entityRuntimeId, event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    private void onMove(PlayerMoveEvent event) {
+    @Override
+    public void onKeepLookingEntity(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Location location = event.getTo();
 
