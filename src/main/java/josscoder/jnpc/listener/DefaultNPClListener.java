@@ -20,22 +20,22 @@ import josscoder.jnpc.factory.NPCFactory;
 
 public class DefaultNPClListener implements NPCListener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
     @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoinHandleEntities(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         NPCFactory.getInstance().showLevelNPCS(player.getLevel(), player);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
     @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCleanupEntities(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         NPCFactory.getInstance().hideLevelNPCS(player.getLevel(), player);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
     @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onLevelChangeHandleEntities(EntityLevelChangeEvent event) {
         Entity entity = event.getEntity();
         if (!(entity instanceof Player)) {
@@ -51,8 +51,8 @@ public class DefaultNPClListener implements NPCListener {
         NPCFactory.getInstance().showLevelNPCS(target, player);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
     @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onLeftEntity(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
         if (!(damager instanceof Player)) {
@@ -62,8 +62,8 @@ public class DefaultNPClListener implements NPCListener {
         NPCFactory.getInstance().handleNPCController(event.getEntity().getId(), (Player) damager);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
     @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onRightEntity(DataPacketReceiveEvent event) {
         DataPacket packet = event.getPacket();
         if (!(packet instanceof InventoryTransactionPacket)) {
@@ -86,8 +86,8 @@ public class DefaultNPClListener implements NPCListener {
         NPCFactory.getInstance().handleNPCController(((UseItemOnEntityData) data).entityRuntimeId, event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
     @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onKeepLookingEntity(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Location location = event.getTo();
