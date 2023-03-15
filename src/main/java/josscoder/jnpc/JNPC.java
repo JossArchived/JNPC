@@ -7,10 +7,21 @@ import josscoder.jnpc.listener.NPCListener;
 
 public class JNPC {
 
+    /**
+     * Action to start the library
+     *
+     * @param pluginBase plugin that enables the library
+     */
     public static void init(PluginBase pluginBase) {
         JNPC.init(pluginBase, new DefaultNPClListener());
     }
 
+    /**
+     * Action to start the library
+     *
+     * @param pluginBase plugin that enables the library
+     * @param npcListener the listener to handle NPCS actions
+     */
     public static void init(PluginBase pluginBase, NPCListener npcListener) {
         NPCFactory.make();
         pluginBase.getServer().getPluginManager().registerEvents(npcListener, pluginBase);
