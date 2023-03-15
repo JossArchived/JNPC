@@ -12,6 +12,12 @@ import java.nio.file.Path;
 
 public class NPCSkinUtils {
 
+    /**
+     * Action to obtain a skin from a path
+     *
+     * @param skinPath the path
+     * @return the skin
+     */
     public static Skin from(final Path skinPath) {
         Skin skin = new Skin();
 
@@ -24,7 +30,7 @@ public class NPCSkinUtils {
         try {
             skinData = ImageIO.read(skinPath.toFile());
         } catch (IOException e) {
-            throw new NPCException("Invalid Skin Data: " +  e.getMessage());
+            throw new NPCException("Invalid Skin Data: " + e.getMessage());
         }
 
         skin.setSkinData(skinData);
@@ -36,6 +42,14 @@ public class NPCSkinUtils {
         return skin;
     }
 
+    /**
+     * Action to obtain a 3d skin from a path
+     *
+     * @param skinPath     the skin path
+     * @param geometryPath the geometry path
+     * @param geometryName the geometry name
+     * @return the skin
+     */
     public static Skin from(Path skinPath, Path geometryPath, String geometryName) {
         Skin skin = new Skin();
 
@@ -50,7 +64,7 @@ public class NPCSkinUtils {
             skinData = ImageIO.read(skinPath.toFile());
             geometry = new String(Files.readAllBytes(geometryPath), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new NPCException("Invalid Skin Data: " +  e.getMessage());
+            throw new NPCException("Invalid Skin Data: " + e.getMessage());
         }
 
         skin.setSkinData(skinData);

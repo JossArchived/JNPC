@@ -10,8 +10,14 @@ import lombok.Getter;
 @Getter
 public class HumanAttributes {
 
+    /**
+     * the entity human skin
+     */
     private final Skin skin;
 
+    /**
+     * the entity human in hand item
+     */
     @Builder.Default
     private final Item handItem = new BlockAir().toItem();
 

@@ -3,6 +3,7 @@
 </h1>
 
 ## 📙 Description
+
 Library to manage npcs on your Nukkit server
 
 # 📖 Features
@@ -18,9 +19,11 @@ Library to manage npcs on your Nukkit server
 - [ ] Paths to walk
 
 ## 🌏 Add as dependency
+
 Maven:
 
 ```xml
+
 <repositories>
     <repository>
         <id>jitpack.io</id>
@@ -29,13 +32,14 @@ Maven:
 </repositories>
 
 <dependency>
-    <groupId>com.github.Josscoder</groupId>
-    <artifactId>JNPC</artifactId>
-    <version>1.0.0</version>
+<groupId>com.github.Josscoder</groupId>
+<artifactId>JNPC</artifactId>
+<version>1.0.0</version>
 </dependency>
 ```
 
 ### Setup
+
 ```java
 import cn.nukkit.plugin.PluginBase;
 import josscoder.jnpc.JNPC;
@@ -50,6 +54,7 @@ public class JNPCTest extends PluginBase {
 ```
 
 ### Build a normal NPC
+
 ```java
 package josscoder.jnpc;
 
@@ -71,7 +76,7 @@ public class JNPCTest extends PluginBase {
         NPC.create(AttributeSettings.builder()
                 .networkId(EntitySheep.NETWORK_ID)
                 .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                .controller((npc, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + npc.getEntityId())))
+                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + npc.getEntityId())))
                 .build());
     }
 }
@@ -80,10 +85,12 @@ public class JNPCTest extends PluginBase {
 ![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/1.png)
 
 ### Build a human NPC
+
 Well, there are 3 ways, getting the skin from the player, getting the skin with our NPCSkinUtils class /
 and/or obtaining a skin with geometry and texture with the same class, let's see:
 
 #### Way #1
+
 ```java
 package josscoder.jnpc;
 
@@ -115,10 +122,10 @@ public class JNPCTest extends PluginBase implements Listener {
                 .build();
 
         NPC.create(AttributeSettings.builder()
-                .networkId(EntityHuman.NETWORK_ID)
-                .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
-                .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
-                .build(),
+                        .networkId(EntityHuman.NETWORK_ID)
+                        .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
+                        .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
+                        .build(),
                 humanAttributes
         );
     }
@@ -126,6 +133,7 @@ public class JNPCTest extends PluginBase implements Listener {
 ```
 
 #### Way #2
+
 ```java
 package josscoder.jnpc;
 
@@ -165,6 +173,7 @@ public class JNPCTest extends PluginBase {
 ```
 
 #### Way #3
+
 ```java
 package josscoder.jnpc;
 
@@ -311,6 +320,7 @@ public class JNPCTest extends PluginBase {
 ![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/8.png)
 
 ### Play with the sizes
+
 ```java
 package josscoder.jnpc;
 
@@ -383,13 +393,14 @@ public class JNPCTest extends PluginBase {
 ```
 
 ![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/3.png)
-*Wow, now it works great!* 
+*Wow, now it works great!*
 
 ### The legends were true... there are giant zombies!
 
 ![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/4.png)
 
 But... how did you do it? Simple, this way:
+
 ```java
 package josscoder.jnpc;
 
@@ -418,6 +429,7 @@ public class JNPCTest extends PluginBase {
 ```
 
 ### Follow player with the look (keepLooking)
+
 ```java
 package josscoder.jnpc;
 
@@ -459,4 +471,5 @@ public class JNPCTest extends PluginBase {
 
 ## 📜 LICENSE
 
-This plugin is licensed under the [GNU GENERAL PUBLIC LICENSE](https://github.com/Josscoder/JNPC/blob/master/LICENSE), this plugin was completely created by Josscoder (José Luciano Mejia Arias)
+This plugin is licensed under the [GNU GENERAL PUBLIC LICENSE](https://github.com/Josscoder/JNPC/blob/master/LICENSE),
+this plugin was completely created by Josscoder (José Luciano Mejia Arias)

@@ -13,26 +13,35 @@ import lombok.Setter;
 @Getter
 public class Line extends Spawnable {
 
+    private final String name;
+    private final int separator;
     @Setter
     private NPC linkedNPC;
 
-    private final String name;
-    private final int separator;
-
+    /**
+     * @param name The name of the line, what will be displayed
+     */
     public Line(String name) {
         this(name, 1);
     }
 
+    /**
+     * @param name      The name of the line, what will be displayed
+     * @param separator The amount of separation between this line and the next one
+     */
     public Line(String name, int separator) {
         super(AttributeSettings.builder()
-                .networkId(EntityCreeper.NETWORK_ID)
-                .build(),
+                        .networkId(EntityCreeper.NETWORK_ID)
+                        .build(),
                 null
         );
         this.name = name;
         this.separator = separator;
     }
 
+    /**
+     * @param name The new name of the line
+     */
     public void rename(String name) {
         SetEntityDataPacket packet = new SetEntityDataPacket();
         packet.eid = entityId;

@@ -15,7 +15,7 @@ public class NPC extends Spawnable {
     private final TagSettings tagSettings;
     private final HumanAttributes humanSettings;
 
-    public NPC(AttributeSettings attributeSettings,HumanAttributes humanSettings) {
+    private NPC(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
         super(attributeSettings, humanSettings);
         this.humanSettings = humanSettings;
 
@@ -23,6 +23,13 @@ public class NPC extends Spawnable {
         this.tagSettings.setLinkedNPC(this);
     }
 
+    /**
+     * Action to create the new entities
+     *
+     * @param attributeSettings entity attributes
+     * @param humanSettings     the attributes of the human
+     * @return the NPC
+     */
     public static NPC create(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
         NPC npc = new NPC(attributeSettings, humanSettings);
 
@@ -31,14 +38,31 @@ public class NPC extends Spawnable {
         return npc;
     }
 
+    /**
+     * Action to create the new entities
+     *
+     * @param attributeSettings entity attributes
+     * @return the NPC
+     */
     public static NPC create(AttributeSettings attributeSettings) {
         return NPC.create(attributeSettings, null);
     }
 
+    /**
+     * Action to make the entity look at a position
+     *
+     * @param vector3 the position at which the NPC will look
+     */
     public void lookAt(Vector3 vector3) {
         lookAt(vector3, false);
     }
 
+    /**
+     * Action to make the entity look at a position
+     *
+     * @param vector3 the position at which the NPC will look
+     * @param update  this is left false when you add it when creating the entity, because in theory there is not yet a position to update and true when the entity is already created and you want it to update its position
+     */
     public void lookAt(Vector3 vector3, boolean update) {
         Location location = attributeSettings.getLocation();
 
@@ -74,14 +98,17 @@ public class NPC extends Spawnable {
         reloadLines();
     }
 
-    public void spawnLines(Player player) {
+    private void spawnLines(Player player) {
         tagSettings.getLines().forEach(line -> line.show(player));
     }
 
-    public void hideLines(Player player) {
+    private void hideLines(Player player) {
         tagSettings.getLines().forEach(line -> line.hide(player));
     }
 
+    /**
+     * Action to reload all lines of the tag
+     */
     public void reloadLines() {
         playerList.forEach(player -> {
             hideLines(player);

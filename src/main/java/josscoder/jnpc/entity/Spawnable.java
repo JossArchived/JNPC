@@ -18,7 +18,8 @@ import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import lombok.Getter;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.ByteOrder;
@@ -39,13 +40,13 @@ public abstract class Spawnable implements ISpawnable {
         this.attributeSettings = attributeSettings;
 
         int networkId = attributeSettings.getNetworkId();
-        if (networkId == 0) {
+        if (networkId == 0) { //this is special for custom entities, to generate a different network id that doesn't interfere with the current ones
             int newRuntimeId = NPCFactory.getInstance().getCurrentRuntimeId();
             attributeSettings.setNetworkId(newRuntimeId);
             networkId = newRuntimeId;
         }
 
-        if (!isHuman() && !AddEntityPacket.LEGACY_IDS.containsKey(networkId)) {
+        if (!isHuman() && !AddEntityPacket.LEGACY_IDS.containsKey(networkId)) { // Hack to add custom entities
             if (attributeSettings.isCustomEntity()) {
                 String minecraftId = attributeSettings.getMinecraftId();
 
@@ -69,11 +70,13 @@ public abstract class Spawnable implements ISpawnable {
                     CompoundTag nbtFile = NBTIO.read(inputStream, ByteOrder.BIG_ENDIAN, true);
                     ListTag<CompoundTag> idlist = nbtFile.getList("idlist", CompoundTag.class);
 
+                    String behaviorId = attributeSettings.getMinecraftBehaviorId() == null ? minecraftId : attributeSettings.getMinecraftBehaviorId();
+
                     CompoundTag nbtEntry = new CompoundTag();
                     nbtEntry.putBoolean("hasspawnegg", false)
                             .putBoolean("summonable", false)
                             .putString("id", minecraftId)
-                            .putString("bid", minecraftId)
+                            .putString("bid", behaviorId)
                             .putInt("rid", networkId);
                     idlist.add(nbtEntry);
                     nbtFile.putList(idlist);
@@ -105,10 +108,20 @@ public abstract class Spawnable implements ISpawnable {
         return attributeSettings.getNetworkId() == EntityHuman.NETWORK_ID;
     }
 
+    /**
+     * Action to add the metadata for when the entity spawns
+     *
+     * @param metadata the data
+     */
     public void mergeMetadata(EntityMetadata metadata) {
         this.mergedMetadataList.add(metadata);
     }
 
+    /**
+     * Action to update the metadata when the entity is already spawned
+     *
+     * @param metadataList the data list
+     */
     public void updateMetadata(List<EntityMetadata> metadataList) {
         metadataList.forEach(metadata -> {
             SetEntityDataPacket packet = new SetEntityDataPacket();
@@ -138,7 +151,7 @@ public abstract class Spawnable implements ISpawnable {
 
             PlayerListPacket playerListAdd = new PlayerListPacket();
             playerListAdd.type = PlayerListPacket.TYPE_ADD;
-            playerListAdd.entries = new PlayerListPacket.Entry[] {
+            playerListAdd.entries = new PlayerListPacket.Entry[]{
                     new PlayerListPacket.Entry(uuid, entityId, uuid.toString(), skin)
             };
             player.dataPacket(playerListAdd);
@@ -170,7 +183,7 @@ public abstract class Spawnable implements ISpawnable {
 
             PlayerListPacket playerListRemove = new PlayerListPacket();
             playerListRemove.type = PlayerListPacket.TYPE_REMOVE;
-            playerListRemove.entries = new PlayerListPacket.Entry[] {
+            playerListRemove.entries = new PlayerListPacket.Entry[]{
                     new PlayerListPacket.Entry(uuid)
             };
             player.dataPacket(playerListRemove);

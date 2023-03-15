@@ -14,22 +14,40 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Getter
 public class TagSettings {
 
-    public static float ONE_BREAK_LINE = 0.32f;
+    /**
+     * Separation between line
+     */
+    private static final float ONE_BREAK_LINE = 0.32f;
 
     private final List<Line> lines = new ArrayList<>();
 
     @Setter
     private NPC linkedNPC;
 
+    /**
+     * Action to add a new line
+     *
+     * @param line the line class
+     * @return TagSettings class
+     */
     public TagSettings addLine(Line line) {
         lines.add(line);
         return this;
     }
 
+    /**
+     * Action to get the line by index
+     *
+     * @param index the index
+     * @return the line or null
+     */
     public Line getLine(int index) {
         return lines.get(index);
     }
 
+    /**
+     * adjust the lines so they are not crowded
+     */
     public void adjust() {
         AtomicInteger index = new AtomicInteger(0);
 
