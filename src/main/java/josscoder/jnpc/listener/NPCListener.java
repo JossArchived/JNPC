@@ -22,11 +22,11 @@ public interface NPCListener extends Listener {
 
     }
 
-    default void onLeftEntity(EntityDamageByEntityEvent event) {
+    default void onLeftClickEntity(EntityDamageByEntityEvent event) {
 
     }
 
-    default void onRightEntity(DataPacketReceiveEvent event) {
+    default void onRightClickEntity(DataPacketReceiveEvent event) {
 
     }
 

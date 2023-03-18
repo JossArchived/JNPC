@@ -53,7 +53,7 @@ public class DefaultNPClListener implements NPCListener {
 
     @Override
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onLeftEntity(EntityDamageByEntityEvent event) {
+    public void onLeftClickEntity(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
         if (!(damager instanceof Player)) {
             return;
@@ -64,7 +64,7 @@ public class DefaultNPClListener implements NPCListener {
 
     @Override
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onRightEntity(DataPacketReceiveEvent event) {
+    public void onRightClickEntity(DataPacketReceiveEvent event) {
         DataPacket packet = event.getPacket();
         if (!(packet instanceof InventoryTransactionPacket)) {
             return;
@@ -76,9 +76,7 @@ public class DefaultNPClListener implements NPCListener {
             return;
         }
 
-        InventoryTransactionPacket inventoryTransactionPacket = (InventoryTransactionPacket) packet;
-
-        TransactionData data = inventoryTransactionPacket.transactionData;
+        TransactionData data = transactionPacket.transactionData;
         if (!(data instanceof UseItemOnEntityData)) {
             return;
         }

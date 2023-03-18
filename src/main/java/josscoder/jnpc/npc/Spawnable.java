@@ -1,28 +1,19 @@
 package josscoder.jnpc.npc;
 
-import cn.nukkit.Nukkit;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.level.Location;
-import cn.nukkit.nbt.NBTIO;
-import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.*;
-import com.google.common.collect.ImmutableMap;
 import josscoder.jnpc.exception.NPCException;
 import josscoder.jnpc.factory.NPCFactory;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
+import josscoder.jnpc.utils.CustomEntityUtil;
 import lombok.Getter;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.nio.ByteOrder;
 import java.util.*;
 
 @Getter
@@ -35,10 +26,7 @@ public abstract class Spawnable implements ISpawnable {
     protected long entityId;
     protected Set<EntityMetadata> mergedMetadataList = new HashSet<>();
 
-    @SuppressWarnings("unchecked")
     public Spawnable(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
-        this.attributeSettings = attributeSettings;
-
         int networkId = attributeSettings.getNetworkId();
         if (networkId == 0) { //this is special for custom entities, to generate a different network id that doesn't interfere with the current ones
             int newRuntimeId = NPCFactory.getInstance().getCurrentRuntimeId();
@@ -49,57 +37,14 @@ public abstract class Spawnable implements ISpawnable {
         if (!isHuman() && !AddEntityPacket.LEGACY_IDS.containsKey(networkId)) { // Hack to add custom entities
             if (attributeSettings.isCustomEntity()) {
                 String minecraftId = attributeSettings.getMinecraftId();
-
-                try {
-                    //MODIFY AddEntityPacket to support new entity
-
-                    Class<AddEntityPacket> addEntityPacketClass = AddEntityPacket.class;
-                    Field legacyIdsField = addEntityPacketClass.getField("LEGACY_IDS");
-                    legacyIdsField.setAccessible(true);
-
-                    Map<Integer, String> legacyIds = new HashMap<>((ImmutableMap<Integer, String>) legacyIdsField.get(null));
-                    legacyIds.put(networkId, minecraftId);
-
-                    ImmutableMap<Integer, String> immutableMap = ImmutableMap.copyOf(legacyIds);
-
-                    legacyIdsField.set(new AddEntityPacket(), immutableMap);
-
-                    //get entity_identifiers.dat bytes and add new entity
-
-                    InputStream inputStream = Nukkit.class.getClassLoader().getResourceAsStream("entity_identifiers.dat");
-                    CompoundTag nbtFile = NBTIO.read(inputStream, ByteOrder.BIG_ENDIAN, true);
-                    ListTag<CompoundTag> idlist = nbtFile.getList("idlist", CompoundTag.class);
-
-                    String behaviorId = attributeSettings.getMinecraftBehaviorId() == null ? minecraftId : attributeSettings.getMinecraftBehaviorId();
-
-                    CompoundTag nbtEntry = new CompoundTag();
-                    nbtEntry.putBoolean("hasspawnegg", false)
-                            .putBoolean("summonable", false)
-                            .putString("id", minecraftId)
-                            .putString("bid", behaviorId)
-                            .putInt("rid", networkId);
-                    idlist.add(nbtEntry);
-                    nbtFile.putList(idlist);
-
-                    byte[] bytesToWrite = NBTIO.write(nbtFile, ByteOrder.BIG_ENDIAN, true);
-
-                    //MODIFY TAG of AvailableEntityIdentifiersPacket with new bytes
-                    Class<AvailableEntityIdentifiersPacket> availableEntityIdentifiersPacketClass = AvailableEntityIdentifiersPacket.class;
-                    Field tagField = availableEntityIdentifiersPacketClass.getDeclaredField("TAG");
-                    tagField.setAccessible(true);
-                    Field modifiersField = Field.class.getDeclaredField("modifiers");
-                    modifiersField.setAccessible(true);
-                    modifiersField.setInt(tagField, tagField.getModifiers() & ~Modifier.FINAL);
-                    tagField.set(null, bytesToWrite);
-
-                } catch (NoSuchFieldException | IllegalAccessException | IOException e) {
-                    throw new NPCException("Error adding new NETWORK_ID: " + e);
-                }
+                String behaviorId = attributeSettings.getMinecraftBehaviorId() == null ? minecraftId : attributeSettings.getMinecraftBehaviorId();
+                CustomEntityUtil.updateStaticPacketCache(networkId, minecraftId, behaviorId);
             } else {
                 throw new NPCException("That NETWORK_ID does not exist, if you are using custom entities, put attributeSettings.customEntity(true)");
             }
         }
 
+        this.attributeSettings = attributeSettings;
         this.humanSettings = humanSettings;
         this.entityId = Entity.entityCount++;
     }
@@ -128,9 +73,12 @@ public abstract class Spawnable implements ISpawnable {
             packet.eid = entityId;
             packet.metadata = metadata;
             packet.frame = 0;
-            viewerList.forEach(player -> player.dataPacket(packet));
+            viewerList.forEach(player -> {
+                if (player != null) {
+                    player.dataPacket(packet);
+                }
+            });
         });
-        mergedMetadataList.addAll(metadataList);
     }
 
     @Override
@@ -213,6 +161,8 @@ public abstract class Spawnable implements ISpawnable {
 
     @Override
     public void move(Location location) {
+        attributeSettings.setLocation(location);
+
         MoveEntityAbsolutePacket packet = new MoveEntityAbsolutePacket();
         packet.eid = entityId;
         packet.forceMoveLocalEntity = true;
@@ -224,8 +174,6 @@ public abstract class Spawnable implements ISpawnable {
         packet.yaw = location.getYaw();
         packet.headYaw = location.getHeadYaw();
         packet.pitch = location.getPitch();
-
-        attributeSettings.setLocation(location);
 
         viewerList.forEach(player -> {
             if (player != null) {

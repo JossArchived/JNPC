@@ -4,12 +4,13 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.entity.mob.EntityCreeper;
-import cn.nukkit.network.protocol.SetEntityDataPacket;
 import cn.nukkit.utils.TextFormat;
 import josscoder.jnpc.settings.AttributeSettings;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
 
 @Getter
 @ToString
@@ -42,14 +43,9 @@ public class Line extends Spawnable {
      * @param name The new name of the line
      */
     public void rename(String name) {
-        SetEntityDataPacket packet = new SetEntityDataPacket();
-        packet.eid = entityId;
-        packet.metadata = new EntityMetadata().putString(Entity.DATA_NAMETAG, TextFormat.colorize(name));
-        linkedNPC.getViewerList().forEach(player -> {
-            if (player != null) {
-                player.dataPacket(packet);
-            }
-        });
+        updateMetadata(new ArrayList<EntityMetadata>(){{
+            add(new EntityMetadata().putString(Entity.DATA_NAMETAG, TextFormat.colorize(name)));
+        }});
     }
 
     @Override

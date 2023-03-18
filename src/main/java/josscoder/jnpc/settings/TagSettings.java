@@ -52,9 +52,9 @@ public class TagSettings {
             Location lineLoc;
 
             if (index.get() == 0) {
-                lineLoc = location.getLocation().add(0, linkedNPC.getAttributeSettings().getBoundingBoxHeight(), 0);
+                lineLoc = location.getLocation().add(0, linkedNPC.getAttributeSettings().getBoundingBoxHeight());
             } else {
-                lineLoc = lines.get(index.get() - 1).getAttributeSettings().getLocation().add(0, (ONE_BREAK_LINE * line.getSeparator()), 0);
+                lineLoc = lines.get(index.get() - 1).getAttributeSettings().getLocation().add(0, (ONE_BREAK_LINE * line.getSeparator()));
             }
 
             line.move(lineLoc);
@@ -67,6 +67,8 @@ public class TagSettings {
      * adjust the lines so they are not crowded
      */
     public void adjust() {
+        AttributeSettings npcAttributes = linkedNPC.getAttributeSettings();
+
         AtomicInteger index = new AtomicInteger(0);
 
         Collections.reverse(lines);
@@ -74,14 +76,12 @@ public class TagSettings {
         lines.forEach(line -> {
             line.setLinkedNPC(linkedNPC);
 
-            AttributeSettings npcAttributes = linkedNPC.getAttributeSettings();
-
             Location location;
 
             if (index.get() == 0) {
-                location = npcAttributes.getLocation().add(0, npcAttributes.getBoundingBoxHeight(), 0);
+                location = npcAttributes.getLocation().add(0, npcAttributes.getBoundingBoxHeight());
             } else {
-                location = lines.get(index.get() - 1).getAttributeSettings().getLocation().add(0, (ONE_BREAK_LINE * line.getSeparator()), 0);
+                location = lines.get(index.get() - 1).getAttributeSettings().getLocation().add(0, (ONE_BREAK_LINE * line.getSeparator()));
             }
 
             line.getAttributeSettings().setLocation(location);

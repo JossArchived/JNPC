@@ -85,12 +85,6 @@ public class NPC extends Spawnable {
     }
 
     @Override
-    public void hide(Player player) {
-        super.hide(player);
-        hideLines(player);
-    }
-
-    @Override
     public void move(Location location) {
         Location oldLocation = attributeSettings.getLocation();
 
@@ -99,6 +93,12 @@ public class NPC extends Spawnable {
         if (location.getX() != oldLocation.getX() || location.getY() != oldLocation.getY() || location.getZ() != oldLocation.getZ()) {
             tagSettings.readjust(location);
         }
+    }
+
+    @Override
+    public void hide(Player player) {
+        super.hide(player);
+        hideLines(player);
     }
 
     /**
@@ -124,8 +124,10 @@ public class NPC extends Spawnable {
      */
     public void reloadLines() {
         viewerList.forEach(player -> {
-            hideLines(player);
-            spawnLines(player);
+            if (player != null) {
+                hideLines(player);
+                spawnLines(player);
+            }
         });
     }
 }
