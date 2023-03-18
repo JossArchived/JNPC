@@ -34,6 +34,8 @@ public abstract class Spawnable implements ISpawnable {
             networkId = newRuntimeId;
         }
 
+        this.attributeSettings = attributeSettings;
+
         if (!isHuman() && !AddEntityPacket.LEGACY_IDS.containsKey(networkId)) { // Hack to add custom entities
             if (attributeSettings.isCustomEntity()) {
                 String minecraftId = attributeSettings.getMinecraftId();
