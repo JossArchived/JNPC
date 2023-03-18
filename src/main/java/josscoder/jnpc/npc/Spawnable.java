@@ -46,7 +46,6 @@ public abstract class Spawnable implements ISpawnable {
             }
         }
 
-        this.attributeSettings = attributeSettings;
         this.humanSettings = humanSettings;
         this.entityId = Entity.entityCount++;
     }
