@@ -462,5 +462,5 @@ public class JNPCTest extends PluginBase {
 
 ## 📜 LICENSE
 
-This plugin is licensed under the [GNU GENERAL PUBLIC LICENSE](https://github.com/Josscoder/JNPC/blob/master/LICENSE),
+This plugin is licensed under the [Apache License 2.0 LICENSE](https://github.com/Josscoder/JNPC/blob/master/LICENSE),
 this plugin was completely created by Josscoder (José Luciano Mejia Arias)
