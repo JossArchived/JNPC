@@ -49,10 +49,16 @@ public class AttributeSettings {
     private float scale = 1.0f;
 
     /**
-     * Height from where the tag will start to be generated
+     * boundingBoxHeight
      */
     @Builder.Default
-    private float boundingBoxHeight = 1.8f;
+    private Float boundingBoxHeight = null;
+
+    /**
+     * boundingBoxWidth
+     */
+    @Builder.Default
+    private Float boundingBoxWidth = null;
 
     /**
      * the action to execute when touching the entity

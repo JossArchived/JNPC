@@ -28,12 +28,18 @@ public class NPC extends Spawnable {
      * @param humanSettings the attributes of the entity human
      * @return the NPC
      */
-    public static NPC create(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
+    public static NPC create(AttributeSettings attributeSettings, HumanAttributes humanSettings, boolean store) {
         NPC npc = new NPC(attributeSettings, humanSettings);
 
-        NPCFactory.getInstance().store(npc);
+        if (store) {
+            NPCFactory.getInstance().store(npc);
+        }
 
         return npc;
+    }
+
+    public static NPC create(AttributeSettings attributeSettings, HumanAttributes humanAttributes) {
+        return create(attributeSettings, humanAttributes, true);
     }
 
     /**

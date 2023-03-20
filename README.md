@@ -294,13 +294,13 @@ public class JNPCTest extends PluginBase {
         NPC npc = NPC.create(AttributeSettings.builder()
                 .customEntity(true)
                 .minecraftId("clover:ffa_npc")
-                .boundingBoxHeight(2f)
                 .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
                 .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
                 .build()
         );
 
         npc.getTagSettings()
+                .height(2f)
                 .addLine(new Line("&d&lFirst Header", 2)) //line with spaces
                 .addLine(new Line("&eSub header")) //normal line
                 .addLine(new Line("&o&7Footer")) //normal line
@@ -371,12 +371,12 @@ public class JNPCTest extends PluginBase {
 
         NPC npc = NPC.create(AttributeSettings.builder()
                 .networkId(EntitySlime.NETWORK_ID)
-                .boundingBoxHeight(0.5f) //Here!
                 .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
                 .controller((clickedNPC, player) -> player.sendMessage(TextFormat.colorize("Hello i'm NPC " + clickedNPC.getEntityId())))
                 .build());
 
         npc.getTagSettings()
+                .height(0.5f) //Here!
                 .addLine(new Line("&d&lFirst Header", 2))
                 .addLine(new Line("&eSub header"))
                 .addLine(new Line("&o&7Footer"))
@@ -443,13 +443,13 @@ public class JNPCTest extends PluginBase {
                 .networkId(EntityCreeper.NETWORK_ID)
                 .keepLooking(true) //Here!
                 .scale(2)
-                .boundingBoxHeight(3f)
                 .location(new Location(0, 100, 0, 100, 0, getServer().getDefaultLevel()))
                 .controller((clickedNPC, player) -> player.sendMessage("Mineplex is better than josscodercraft"))
                 .build());
 
         TagSettings tagSettings = npc.getTagSettings();
         tagSettings
+                .height(3f)
                 .addLine(new Line("&a&lKarl the creeper"))
                 .addLine(new Line("&o&7Click to receive love!"))
                 .adjust();

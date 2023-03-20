@@ -93,6 +93,16 @@ public abstract class Spawnable implements ISpawnable {
         metadata.putLong(Entity.DATA_LEAD_HOLDER_EID, -1);
         metadata.putFloat(Entity.DATA_SCALE, attributeSettings.getScale());
 
+        Float boundingBoxHeight = attributeSettings.getBoundingBoxHeight();
+        if (boundingBoxHeight != null) {
+            metadata.putFloat(Entity.DATA_BOUNDING_BOX_HEIGHT, boundingBoxHeight);
+        }
+
+        Float boundingBoxWidth = attributeSettings.getBoundingBoxWidth();
+        if (boundingBoxWidth != null) {
+            metadata.putFloat(Entity.DATA_BOUNDING_BOX_WIDTH, boundingBoxWidth);
+        }
+
         mergedMetadataList.forEach(mergedMetadata -> mergedMetadata.getMap().values().forEach((metadata::put)));
 
         if (isHuman()) {

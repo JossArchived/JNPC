@@ -33,7 +33,13 @@ public class Line extends Spawnable {
      * @param separator The amount of separation between this line and the next one
      */
     public Line(String name, int separator) {
-        super(AttributeSettings.builder().networkId(EntityCreeper.NETWORK_ID).build(), null);
+        super(AttributeSettings.builder()
+                .networkId(EntityCreeper.NETWORK_ID)
+                .boundingBoxWidth(0f)
+                .scale(0.004f)
+                .build(),
+                null
+        );
 
         this.name = name;
         this.separator = separator;
@@ -50,16 +56,7 @@ public class Line extends Spawnable {
 
     @Override
     public void show(Player player) {
-        EntityMetadata metadata = new EntityMetadata();
-        metadata.putString(Entity.DATA_NAMETAG, TextFormat.colorize(name));
-        metadata.putByte(Entity.DATA_ALWAYS_SHOW_NAMETAG, 1);
-        metadata.putByte(Entity.DATA_FLAG_ALWAYS_SHOW_NAMETAG, 1);
-        metadata.putByte(Entity.DATA_FLAG_CAN_SHOW_NAMETAG, 1);
-        metadata.putLong(Entity.DATA_LEAD_HOLDER_EID, -1);
-        metadata.putFloat(Entity.DATA_BOUNDING_BOX_WIDTH, 0);
-        metadata.putFloat(Entity.DATA_SCALE, 0.004f);
-        mergeMetadata(metadata);
-
+        mergeMetadata(new EntityMetadata().putString(Entity.DATA_NAMETAG, TextFormat.colorize(name)));
         super.show(player);
     }
 }

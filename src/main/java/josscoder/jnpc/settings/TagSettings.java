@@ -24,6 +24,8 @@ public class TagSettings {
     @Setter
     private NPC linkedNPC;
 
+    private float height = 1.8f;
+
     /**
      * Action to add a new line
      *
@@ -45,6 +47,14 @@ public class TagSettings {
         return lines.get(index);
     }
 
+    /**
+     * Height from where the tag will start to be generated
+     */
+    public TagSettings height(float height) {
+        this.height = height;
+        return this;
+    }
+
     public void readjust(Location location) {
         AtomicInteger index = new AtomicInteger(0);
 
@@ -52,7 +62,7 @@ public class TagSettings {
             Location lineLoc;
 
             if (index.get() == 0) {
-                lineLoc = location.getLocation().add(0, linkedNPC.getAttributeSettings().getBoundingBoxHeight());
+                lineLoc = location.getLocation().add(0, height);
             } else {
                 lineLoc = lines.get(index.get() - 1).getAttributeSettings().getLocation().add(0, (ONE_BREAK_LINE * line.getSeparator()));
             }
@@ -67,8 +77,6 @@ public class TagSettings {
      * adjust the lines so they are not crowded
      */
     public void adjust() {
-        AttributeSettings npcAttributes = linkedNPC.getAttributeSettings();
-
         AtomicInteger index = new AtomicInteger(0);
 
         Collections.reverse(lines);
@@ -79,7 +87,7 @@ public class TagSettings {
             Location location;
 
             if (index.get() == 0) {
-                location = npcAttributes.getLocation().add(0, npcAttributes.getBoundingBoxHeight());
+                location = linkedNPC.getAttributeSettings().getLocation().add(0, height);
             } else {
                 location = lines.get(index.get() - 1).getAttributeSettings().getLocation().add(0, (ONE_BREAK_LINE * line.getSeparator()));
             }
