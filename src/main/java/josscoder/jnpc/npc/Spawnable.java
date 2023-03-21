@@ -141,6 +141,7 @@ public abstract class Spawnable implements ISpawnable {
 
         } else {
             AddEntityPacket packet = new AddEntityPacket();
+            packet.id = attributeSettings.getMinecraftId();
             packet.type = attributeSettings.getNetworkId();
             packet.entityRuntimeId = entityId;
             packet.entityUniqueId = entityId;
