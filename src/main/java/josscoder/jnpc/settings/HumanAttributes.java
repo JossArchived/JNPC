@@ -19,6 +19,6 @@ public class HumanAttributes {
      * the entity human in hand item
      */
     @Builder.Default
-    private final Item handItem = new BlockAir().toItem();
+    private final Item handItem = new BlockAir().asItemBlock();
 
 }
