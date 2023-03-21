@@ -6,7 +6,7 @@
 
     <groupId>josscoder.jnpc</groupId>
     <artifactId>JNPC</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.1-powernukkitx</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -16,12 +16,8 @@
 
     <repositories>
         <repository>
-            <id>opencollab-repo-release</id>
-            <url>https://repo.opencollab.dev/maven-releases/</url>
-        </repository>
-        <repository>
-            <id>opencollab-repo-snapshot</id>
-            <url>https://repo.opencollab.dev/maven-snapshots/</url>
+            <id>jitpack.io</id>
+            <url>https://www.jitpack.io</url>
         </repository>
     </repositories>
 
@@ -33,10 +29,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>cn.nukkit</groupId>
-            <artifactId>nukkit</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>cn.powernukkitx</groupId>
+            <artifactId>powernukkitx</artifactId>
+            <version>1.19.63-r1</version>
         </dependency>
     </dependencies>
 
