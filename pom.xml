@@ -16,6 +16,14 @@
 
     <repositories>
         <repository>
+            <id>opencollab-repo-release</id>
+            <url>https://repo.opencollab.dev/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>opencollab-repo-snapshot</id>
+            <url>https://repo.opencollab.dev/maven-snapshots/</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://www.jitpack.io</url>
         </repository>
