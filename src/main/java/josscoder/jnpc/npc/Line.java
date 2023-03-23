@@ -16,7 +16,7 @@ import java.util.ArrayList;
 @ToString
 public class Line extends Spawnable {
 
-    private final String name;
+    private String name;
     private final int separator;
     @Setter
     private NPC linkedNPC;
@@ -52,6 +52,7 @@ public class Line extends Spawnable {
         updateMetadata(new ArrayList<EntityMetadata>(){{
             add(new EntityMetadata().putString(Entity.DATA_NAMETAG, TextFormat.colorize(name)));
         }});
+        this.name = name;
     }
 
     @Override
