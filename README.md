@@ -281,6 +281,7 @@ package josscoder.jnpc;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
+import josscoder.jnpc.entity.line.PlaceholderLine;
 import josscoder.jnpc.entity.line.SimpleLine;
 import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
@@ -301,6 +302,8 @@ public class JNPCTest extends PluginBase {
 
         npc.getTagSettings()
                 .height(2f)
+                .addLine(new PlaceholderLine(player -> "Hello " + player.getName()))
+                .addLine(new PlaceholderLine(player -> "You are " + player.getName()))
                 .addLine(new SimpleLine("&d&lFirst Header", 2)) //line with spaces
                 .addLine(new SimpleLine("&eSub header")) //normal line
                 .addLine(new SimpleLine("&o&7Footer")) //normal line
