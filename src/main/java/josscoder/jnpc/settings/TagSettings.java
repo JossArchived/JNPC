@@ -1,8 +1,8 @@
 package josscoder.jnpc.settings;
 
 import cn.nukkit.level.Location;
-import josscoder.jnpc.npc.Line;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.line.Line;
+import josscoder.jnpc.entity.npc.NPC;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,7 +44,7 @@ public class TagSettings {
      * @return the line or null
      */
     public Line getLine(int index) {
-        return lines.get(index);
+        return lines.get(Math.max(lines.size() - index - 1, 0));
     }
 
     /**

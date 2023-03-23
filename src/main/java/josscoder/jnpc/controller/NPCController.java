@@ -1,7 +1,7 @@
 package josscoder.jnpc.controller;
 
 import cn.nukkit.Player;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 
 public interface NPCController {
 

@@ -3,7 +3,7 @@ package josscoder.jnpc.factory;
 import cn.nukkit.Player;
 import cn.nukkit.level.Level;
 import josscoder.jnpc.controller.NPCController;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 import lombok.Getter;
 
 import java.util.ArrayList;

@@ -34,7 +34,7 @@ Maven:
 <dependency>
 <groupId>com.github.Josscoder</groupId>
 <artifactId>JNPC</artifactId>
-<version>1.0.0</version>
+<version>1.0.2-powernukkitx</version>
 </dependency>
 ```
 
@@ -62,7 +62,7 @@ import cn.nukkit.entity.passive.EntitySheep;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -100,7 +100,7 @@ import cn.nukkit.item.ItemEndCrystal;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 
@@ -140,7 +140,7 @@ import cn.nukkit.item.ItemEndCrystal;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import josscoder.jnpc.utils.NPCSkinUtils;
@@ -180,7 +180,7 @@ import cn.nukkit.item.ItemEndCrystal;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import josscoder.jnpc.utils.NPCSkinUtils;
@@ -224,7 +224,7 @@ import cn.nukkit.entity.mob.EntityEnderman;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -251,7 +251,7 @@ package josscoder.jnpc;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -281,8 +281,9 @@ package josscoder.jnpc;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.Line;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.line.PlaceholderLine;
+import josscoder.jnpc.entity.line.SimpleLine;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -301,9 +302,11 @@ public class JNPCTest extends PluginBase {
 
         npc.getTagSettings()
                 .height(2f)
-                .addLine(new Line("&d&lFirst Header", 2)) //line with spaces
-                .addLine(new Line("&eSub header")) //normal line
-                .addLine(new Line("&o&7Footer")) //normal line
+                .addLine(new PlaceholderLine(player -> "Hello " + player.getName()))
+                .addLine(new PlaceholderLine(player -> "You are " + player.getName()))
+                .addLine(new SimpleLine("&d&lFirst Header", 2)) //line with spaces
+                .addLine(new SimpleLine("&eSub header")) //normal line
+                .addLine(new SimpleLine("&o&7Footer")) //normal line
                 .adjust(); //ajust lines
 
         npc.getTagSettings().getLine(0).rename("&bNew First"); //rename, Maybe this is good for player counters in game npcs!
@@ -323,8 +326,8 @@ import cn.nukkit.entity.mob.EntitySlime;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.Line;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.line.SimpleLine;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -340,9 +343,9 @@ public class JNPCTest extends PluginBase {
                 .build());
 
         npc.getTagSettings()
-                .addLine(new Line("&d&lFirst Header", 2))
-                .addLine(new Line("&eSub header"))
-                .addLine(new Line("&o&7Footer"))
+                .addLine(new SimpleLine("&d&lFirst Header", 2))
+                .addLine(new SimpleLine("&eSub header"))
+                .addLine(new SimpleLine("&o&7Footer"))
                 .adjust();
     }
 }
@@ -359,8 +362,8 @@ import cn.nukkit.entity.mob.EntitySlime;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.Line;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.line.SimpleLine;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -377,9 +380,9 @@ public class JNPCTest extends PluginBase {
 
         npc.getTagSettings()
                 .height(0.5f) //Here!
-                .addLine(new Line("&d&lFirst Header", 2))
-                .addLine(new Line("&eSub header"))
-                .addLine(new Line("&o&7Footer"))
+                .addLine(new SimpleLine("&d&lFirst Header", 2))
+                .addLine(new SimpleLine("&eSub header"))
+                .addLine(new SimpleLine("&o&7Footer"))
                 .adjust();
     }
 }
@@ -401,7 +404,7 @@ import cn.nukkit.entity.mob.EntityZombie;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 
 public class JNPCTest extends PluginBase {
@@ -428,8 +431,8 @@ package josscoder.jnpc;
 import cn.nukkit.entity.mob.EntityCreeper;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
-import josscoder.jnpc.npc.Line;
-import josscoder.jnpc.npc.NPC;
+import josscoder.jnpc.entity.line.SimpleLine;
+import josscoder.jnpc.entity.npc.NPC;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.TagSettings;
 
@@ -450,8 +453,8 @@ public class JNPCTest extends PluginBase {
         TagSettings tagSettings = npc.getTagSettings();
         tagSettings
                 .height(3f)
-                .addLine(new Line("&a&lKarl the creeper"))
-                .addLine(new Line("&o&7Click to receive love!"))
+                .addLine(new SimpleLine("&a&lKarl the creeper"))
+                .addLine(new SimpleLine("&o&7Click to receive love!"))
                 .adjust();
     }
 }
