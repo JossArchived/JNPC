@@ -1,4 +1,4 @@
-package josscoder.jnpc.npc;
+package josscoder.jnpc.entity.npc;
 
 import cn.nukkit.Player;
 import cn.nukkit.level.Location;
@@ -7,6 +7,7 @@ import josscoder.jnpc.factory.NPCFactory;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import josscoder.jnpc.settings.TagSettings;
+import josscoder.jnpc.entity.spawnable.Spawnable;
 import lombok.Getter;
 
 @Getter

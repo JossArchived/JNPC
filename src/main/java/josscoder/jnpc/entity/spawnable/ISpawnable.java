@@ -1,4 +1,4 @@
-package josscoder.jnpc.npc;
+package josscoder.jnpc.entity.spawnable;
 
 import cn.nukkit.Player;
 import cn.nukkit.level.Location;
