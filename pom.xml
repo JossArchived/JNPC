@@ -6,7 +6,7 @@
 
     <groupId>josscoder.jnpc</groupId>
     <artifactId>JNPC</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.2-nukkit</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
