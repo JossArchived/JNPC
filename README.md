@@ -1,5 +1,5 @@
 <h1>JNPC
-<img src="https://github.com/Josscoder/JNPC/blob/master/.github/assets/logo.png" height="64" width="64" align="left" alt="">
+<img src="https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/logo.png" height="64" width="64" align="left" alt="">
 </h1>
 
 ## 📙 Description
@@ -80,7 +80,7 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/1.png)
+![](https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/1.png)
 
 ### Build a human NPC
 
@@ -213,7 +213,7 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/5.png)
+![](https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/5.png)
 
 ### How to use controller (when click a NPC)
 
@@ -271,7 +271,7 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/6.png)
+![](https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/6.png)
 
 ### How to use the tag and lines
 
@@ -314,8 +314,8 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/7.png)
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/8.png)
+![](https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/7.png)
+![](https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/8.png)
 
 ### Play with the sizes
 
@@ -351,7 +351,7 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/2.png)
+![](https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/2.png)
 
 As we can see the slime is very small and the tag is very high, we have the solution for it:
 
@@ -388,12 +388,12 @@ public class JNPCTest extends PluginBase {
 }
 ```
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/3.png)
+![](https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/3.png)
 *Wow, now it works great!*
 
 ### The legends were true... there are giant zombies!
 
-![](https://github.com/Josscoder/JNPC/blob/master/.github/assets/4.png)
+![](https://github.com/Josscoder/JNPC/blob/powernukkitx/.github/assets/4.png)
 
 But... how did you do it? Simple, this way:
 
@@ -465,5 +465,5 @@ public class JNPCTest extends PluginBase {
 
 ## 📜 LICENSE
 
-This plugin is licensed under the [Apache License 2.0 LICENSE](https://github.com/Josscoder/JNPC/blob/master/LICENSE),
+This plugin is licensed under the [Apache License 2.0 LICENSE](https://github.com/Josscoder/JNPC/blob/powernukkitx/LICENSE),
 this plugin was completely created by Josscoder (José Luciano Mejia Arias)
