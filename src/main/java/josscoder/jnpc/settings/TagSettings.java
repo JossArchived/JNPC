@@ -44,7 +44,7 @@ public class TagSettings {
      * @return the line or null
      */
     public Line getLine(int index) {
-        return lines.get(index);
+        return lines.get(Math.max(lines.size() - index - 1, 0));
     }
 
     /**
