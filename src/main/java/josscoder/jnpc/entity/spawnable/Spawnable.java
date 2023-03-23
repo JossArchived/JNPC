@@ -1,4 +1,4 @@
-package josscoder.jnpc.npc;
+package josscoder.jnpc.entity.spawnable;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
@@ -69,16 +69,20 @@ public abstract class Spawnable implements ISpawnable {
      * @param metadataList the data list
      */
     public void updateMetadata(List<EntityMetadata> metadataList) {
+        viewerList.forEach(player -> updateMetadataForPlayer(metadataList, player));
+        metadataList.forEach(this::mergeMetadata);
+    }
+
+    public void updateMetadataForPlayer(List<EntityMetadata> metadataList, Player player) {
         metadataList.forEach(metadata -> {
             SetEntityDataPacket packet = new SetEntityDataPacket();
             packet.eid = entityId;
             packet.metadata = metadata;
             packet.frame = 0;
-            viewerList.forEach(player -> {
-                if (player != null) {
-                    player.dataPacket(packet);
-                }
-            });
+
+            if (player != null) {
+                player.dataPacket(packet);
+            }
         });
     }
 
