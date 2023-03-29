@@ -34,7 +34,7 @@ Maven:
 <dependency>
 <groupId>com.github.Josscoder</groupId>
 <artifactId>JNPC</artifactId>
-<version>1.0.2-powernukkitx</version>
+<version>1.0.3-powernukkitx</version>
 </dependency>
 ```
 

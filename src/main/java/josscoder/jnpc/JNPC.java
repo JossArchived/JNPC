@@ -23,7 +23,14 @@ public class JNPC {
      * @param npcListener the listener to handle NPCS actions
      */
     public static void init(PluginBase pluginBase, NPCListener npcListener) {
-        NPCFactory.make();
+        init();
         pluginBase.getServer().getPluginManager().registerEvents(npcListener, pluginBase);
+    }
+
+    /**
+     * Action to start the library without default listener
+     */
+    public static void init() {
+        NPCFactory.make();
     }
 }
