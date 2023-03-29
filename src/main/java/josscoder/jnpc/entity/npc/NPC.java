@@ -3,11 +3,11 @@ package josscoder.jnpc.entity.npc;
 import cn.nukkit.Player;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
+import josscoder.jnpc.entity.spawnable.Spawnable;
 import josscoder.jnpc.factory.NPCFactory;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
 import josscoder.jnpc.settings.TagSettings;
-import josscoder.jnpc.entity.spawnable.Spawnable;
 import lombok.Getter;
 
 @Getter
@@ -71,17 +71,26 @@ public class NPC extends Spawnable {
     public void lookAt(Vector3 vector3, boolean update) {
         Location location = attributeSettings.getLocation();
 
-        double xDist = (vector3.getX() - location.getX());
-        double zDist = (vector3.getZ() - location.getZ());
+        double horizontal = Math.sqrt(Math.pow((vector3.x - location.x), 2) + Math.pow((vector3.z - location.z), 2));
+        double vertical = vector3.y - location.y;
+        double pitch = -Math.atan2(vertical, horizontal) / Math.PI * 180;
 
-        location.yaw = Math.atan2(zDist, xDist) / Math.PI * 180 - 90;
+        double xDist = vector3.x - location.x;
+        double zDist = vector3.z - location.z;
 
-        if (location.yaw < 0) {
-            location.yaw += 360.0;
+        double yaw = Math.atan2(zDist, xDist) / Math.PI * 180 - 90;
+        if (yaw < 0) {
+            yaw += 360;
         }
+
+        location.yaw = yaw;
+        location.headYaw = yaw;
+        location.pitch = pitch;
 
         if (update) {
             move(location);
+        } else {
+            attributeSettings.setLocation(location);
         }
     }
 

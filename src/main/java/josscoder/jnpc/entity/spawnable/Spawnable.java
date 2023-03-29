@@ -178,17 +178,30 @@ public abstract class Spawnable implements ISpawnable {
     public void move(Location location) {
         attributeSettings.setLocation(location);
 
-        MoveEntityAbsolutePacket packet = new MoveEntityAbsolutePacket();
-        packet.eid = entityId;
-        packet.forceMoveLocalEntity = true;
-        packet.onGround = false;
-        packet.teleport = true;
-        packet.x = location.getX();
-        packet.y = location.getY();
-        packet.z = location.getZ();
-        packet.yaw = location.getYaw();
-        packet.headYaw = location.getHeadYaw();
-        packet.pitch = location.getPitch();
+        DataPacket packet;
+        if (isHuman()) {
+            packet = new MovePlayerPacket();
+            ((MovePlayerPacket) packet).eid = entityId;
+            ((MovePlayerPacket) packet).onGround = true;
+            ((MovePlayerPacket) packet).x = (float) location.getX();
+            ((MovePlayerPacket) packet).y = (float) location.getY() + 1.6f;
+            ((MovePlayerPacket) packet).z = (float) location.getZ();
+            ((MovePlayerPacket) packet).yaw = (float) location.getYaw();
+            ((MovePlayerPacket) packet).headYaw = (float) location.getYaw();
+            ((MovePlayerPacket) packet).pitch = (float) location.getPitch();
+        } else {
+            packet = new MoveEntityAbsolutePacket();
+            ((MoveEntityAbsolutePacket) packet).eid = entityId;
+            ((MoveEntityAbsolutePacket) packet).forceMoveLocalEntity = true;
+            ((MoveEntityAbsolutePacket) packet).onGround = true;
+            ((MoveEntityAbsolutePacket) packet).teleport = true;
+            ((MoveEntityAbsolutePacket) packet).x = location.getX();
+            ((MoveEntityAbsolutePacket) packet).y = location.getY();
+            ((MoveEntityAbsolutePacket) packet).z = location.getZ();
+            ((MoveEntityAbsolutePacket) packet).yaw = location.getYaw();
+            ((MoveEntityAbsolutePacket) packet).headYaw = location.getYaw();
+            ((MoveEntityAbsolutePacket) packet).pitch = location.getPitch();
+        }
 
         viewerList.forEach(player -> {
             if (player != null) {

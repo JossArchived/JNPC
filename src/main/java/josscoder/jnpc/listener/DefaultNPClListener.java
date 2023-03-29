@@ -88,9 +88,15 @@ public class DefaultNPClListener implements NPCListener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onKeepLookingEntity(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        Location location = event.getTo();
 
-        NPCFactory.getInstance().filterByLevel(location.getLevel())
+        Location from = event.getFrom();
+        Location to = event.getTo();
+
+        if (from.distance(to) < 0.1d) {
+            return;
+        }
+
+        NPCFactory.getInstance().filterByLevel(player.getLevel())
                 .stream().filter(npc -> npc.getAttributeSettings().isKeepLooking())
                 .forEach(npc -> npc.lookAt(player.getLocation().asVector3f().asVector3(), true));
     }
