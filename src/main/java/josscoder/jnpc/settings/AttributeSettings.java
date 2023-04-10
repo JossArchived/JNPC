@@ -64,7 +64,7 @@ public class AttributeSettings {
      * the action to execute when touching the entity
      */
     @Builder.Default
-    private NPCController controller = (npc, player) -> player.sendMessage("Hello world!");
+    private NPCController controller = null;
 
 
     /**

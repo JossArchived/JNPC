@@ -69,4 +69,8 @@ public class NPCFactory {
 
         controller.handle(npc, player);
     }
+
+    public void removeNPC(long entityId) {
+        npcList.removeIf(npc -> npc.getEntityId() == entityId);
+    }
 }
