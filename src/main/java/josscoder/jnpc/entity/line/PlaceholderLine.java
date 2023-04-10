@@ -33,11 +33,7 @@ public class PlaceholderLine extends Line {
     public void rename(Function<Player, String> placeholder) {
         this.placeholder = placeholder;
 
-        viewerList.forEach(player -> {
-            if (player != null) {
-                render(player);
-            }
-        });
+        getViewerList().forEach(this::render);
     }
 
     @Override

@@ -144,20 +144,14 @@ public class NPC extends Spawnable {
      * Action to reload all lines of the tag
      */
     public void reloadLines() {
-        viewerList.forEach(player -> {
-            if (player != null) {
-                hideLines(player);
-                spawnLines(player);
-            }
+        getViewerList().forEach(player -> {
+            hideLines(player);
+            spawnLines(player);
         });
     }
 
     public void remove() {
-        viewerList.forEach(player -> {
-            if (player != null) {
-                hide(player);
-            }
-        });
+        getViewerList().forEach(this::hide);
 
         NPCFactory.getInstance().removeNPC(entityId);
     }

@@ -15,13 +15,15 @@ import josscoder.jnpc.utils.CustomEntityUtil;
 import lombok.Getter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 public abstract class Spawnable implements ISpawnable {
 
     protected final AttributeSettings attributeSettings;
     protected final HumanAttributes humanSettings;
-    protected final List<Player> viewerList = new ArrayList<>();
+
+    private final List<Player> viewerList = new ArrayList<>();
 
     protected long entityId;
     protected Set<EntityMetadata> mergedMetadataList = new HashSet<>();
@@ -69,7 +71,7 @@ public abstract class Spawnable implements ISpawnable {
      * @param metadataList the data list
      */
     public void updateMetadata(List<EntityMetadata> metadataList) {
-        viewerList.forEach(player -> updateMetadataForPlayer(metadataList, player));
+        getViewerList().forEach(player -> updateMetadataForPlayer(metadataList, player));
         metadataList.forEach(this::mergeMetadata);
     }
 
@@ -203,11 +205,7 @@ public abstract class Spawnable implements ISpawnable {
             ((MoveEntityAbsolutePacket) packet).pitch = location.getPitch();
         }
 
-        viewerList.forEach(player -> {
-            if (player != null) {
-                player.dataPacket(packet);
-            }
-        });
+        getViewerList().forEach(player -> player.dataPacket(packet));
     }
 
     @Override
@@ -217,5 +215,9 @@ public abstract class Spawnable implements ISpawnable {
         player.dataPacket(packet);
 
         viewerList.remove(player);
+    }
+
+    public List<Player> getViewerList() {
+        return new ArrayList<>(viewerList).stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 }
