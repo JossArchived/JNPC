@@ -36,11 +36,6 @@ public class NPC extends Spawnable {
             NPCFactory.getInstance().store(npc);
         }
 
-        Location location = attributeSettings.getLocation();
-        if (location.isValid()) {
-            location.getLevel().getPlayers().values().forEach(npc::show);
-        }
-
         return npc;
     }
 
@@ -96,6 +91,13 @@ public class NPC extends Spawnable {
             move(location);
         } else {
             attributeSettings.setLocation(location);
+        }
+    }
+
+    public void showToWorldPlayers() {
+        Location location = attributeSettings.getLocation();
+        if (location.isValid()) {
+            location.getLevel().getPlayers().values().forEach(this::show);
         }
     }
 
