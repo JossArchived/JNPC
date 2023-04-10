@@ -14,6 +14,10 @@ public class PlaceholderLine extends Line {
     @Getter
     private Function<Player, String> placeholder;
 
+    public PlaceholderLine(Function<Player, String > placeholder) {
+        this(placeholder, 1);
+    }
+
     /**
      * @param placeholder text rendering for single player
      * @param separator The amount of separation between this line and the next one
