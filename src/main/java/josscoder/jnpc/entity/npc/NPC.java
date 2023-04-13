@@ -3,6 +3,7 @@ package josscoder.jnpc.entity.npc;
 import cn.nukkit.Player;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.network.protocol.DataPacket;
 import josscoder.jnpc.entity.spawnable.Spawnable;
 import josscoder.jnpc.factory.NPCFactory;
 import josscoder.jnpc.settings.AttributeSettings;
@@ -69,6 +70,16 @@ public class NPC extends Spawnable {
      * @param update  this is left false when you add it when creating the entity, because in theory there is not yet a position to update and true when the entity is already created and you want it to update its position
      */
     public void lookAt(Vector3 vector3, boolean update) {
+        Location location = lookVector(vector3);
+
+        if (update) {
+            move(location);
+        } else {
+            attributeSettings.setLocation(location);
+        }
+    }
+
+    private Location lookVector(Vector3 vector3) {
         Location location = attributeSettings.getLocation();
 
         double horizontal = Math.sqrt(Math.pow((vector3.x - location.x), 2) + Math.pow((vector3.z - location.z), 2));
@@ -87,11 +98,13 @@ public class NPC extends Spawnable {
         location.headYaw = yaw;
         location.pitch = pitch;
 
-        if (update) {
-            move(location);
-        } else {
-            attributeSettings.setLocation(location);
-        }
+        return location;
+    }
+
+    public void keepLooking(Vector3 vector3, Player player) {
+        Location location = lookVector(vector3);
+        DataPacket movePacket = getMovePacket(location);
+        player.dataPacket(movePacket);
     }
 
     public void showToWorldPlayers() {

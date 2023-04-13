@@ -92,12 +92,13 @@ public class DefaultNPClListener implements NPCListener {
         Location from = event.getFrom();
         Location to = event.getTo();
 
-        if (from.distance(to) < 0.1d) {
+        double distance = from.distance(to);
+        if (distance < 0.1d || distance > 20d) {
             return;
         }
 
         NPCFactory.getInstance().filterByLevel(player.getLevel())
                 .stream().filter(npc -> npc.getAttributeSettings().isKeepLooking())
-                .forEach(npc -> npc.lookAt(player.getLocation().asVector3f().asVector3(), true));
+                .forEach(npc -> npc.keepLooking(player.getLocation().asVector3f().asVector3(), player));
     }
 }

@@ -180,6 +180,12 @@ public abstract class Spawnable implements ISpawnable {
     public void move(Location location) {
         attributeSettings.setLocation(location);
 
+        DataPacket movePacket = getMovePacket(location);
+
+        getViewerList().forEach(player -> player.dataPacket(movePacket));
+    }
+
+    public DataPacket getMovePacket(Location location) {
         DataPacket packet;
         if (isHuman()) {
             packet = new MovePlayerPacket();
@@ -204,8 +210,7 @@ public abstract class Spawnable implements ISpawnable {
             ((MoveEntityAbsolutePacket) packet).headYaw = location.getYaw();
             ((MoveEntityAbsolutePacket) packet).pitch = location.getPitch();
         }
-
-        getViewerList().forEach(player -> player.dataPacket(packet));
+        return packet;
     }
 
     @Override
