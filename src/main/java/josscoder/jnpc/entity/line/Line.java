@@ -2,13 +2,13 @@ package josscoder.jnpc.entity.line;
 
 import cn.nukkit.entity.mob.EntityCreeper;
 import josscoder.jnpc.entity.npc.NPC;
-import josscoder.jnpc.entity.spawnable.Spawnable;
+import josscoder.jnpc.entity.spawnable.SpawnAble;
 import josscoder.jnpc.settings.AttributeSettings;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public abstract class Line extends Spawnable {
+public abstract class Line extends SpawnAble {
 
     private final int separator;
 

@@ -38,11 +38,9 @@ public class DefaultNPClListener implements NPCListener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onLevelChangeHandleEntities(EntityLevelChangeEvent event) {
         Entity entity = event.getEntity();
-        if (!(entity instanceof Player)) {
+        if (!(entity instanceof Player player)) {
             return;
         }
-
-        Player player = (Player) entity;
 
         Level origin = event.getOrigin();
         NPCFactory.getInstance().hideLevelNPCS(origin, player);
@@ -66,11 +64,9 @@ public class DefaultNPClListener implements NPCListener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRightClickEntity(DataPacketReceiveEvent event) {
         DataPacket packet = event.getPacket();
-        if (!(packet instanceof InventoryTransactionPacket)) {
+        if (!(packet instanceof InventoryTransactionPacket transactionPacket)) {
             return;
         }
-
-        InventoryTransactionPacket transactionPacket = (InventoryTransactionPacket) packet;
 
         if (transactionPacket.transactionType != InventoryTransactionPacket.TYPE_USE_ITEM_ON_ENTITY) {
             return;

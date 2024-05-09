@@ -56,7 +56,7 @@ public class NPCFactory {
 
     public void handleNPCController(long entityId, Player player) {
         Optional<NPC> npcToHandle = npcList.stream().filter(npc -> npc.getEntityId() == entityId).findFirst();
-        if (!npcToHandle.isPresent()) {
+        if (npcToHandle.isEmpty()) {
             return;
         }
 

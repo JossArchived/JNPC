@@ -3,7 +3,7 @@ package josscoder.jnpc.entity.spawnable;
 import cn.nukkit.Player;
 import cn.nukkit.level.Location;
 
-public interface ISpawnable {
+public interface ISpawnAble {
 
     /**
      * Action to display the entity

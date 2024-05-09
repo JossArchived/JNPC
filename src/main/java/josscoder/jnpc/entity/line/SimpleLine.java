@@ -7,9 +7,9 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
+@Getter
 public class SimpleLine extends Line {
 
-    @Getter
     private String name;
 
     /**
@@ -35,7 +35,7 @@ public class SimpleLine extends Line {
      * @param name The new name of the line
      */
     public void rename(String name) {
-        updateMetadata(new ArrayList<EntityMetadata>(){{
+        updateMetadata(new ArrayList<>() {{
             add(new EntityMetadata().putString(Entity.DATA_NAMETAG, TextFormat.colorize(name)));
         }});
         this.name = name;

@@ -3,6 +3,8 @@ package josscoder.jnpc.entity.spawnable;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
+import cn.nukkit.entity.custom.EntityDefinition;
+import cn.nukkit.entity.custom.EntityManager;
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.level.Location;
@@ -11,14 +13,13 @@ import josscoder.jnpc.exception.NPCException;
 import josscoder.jnpc.factory.NPCFactory;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
-import josscoder.jnpc.utils.CustomEntityUtil;
 import lombok.Getter;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
-public abstract class Spawnable implements ISpawnable {
+public abstract class SpawnAble implements ISpawnAble {
 
     protected final AttributeSettings attributeSettings;
     protected final HumanAttributes humanSettings;
@@ -28,21 +29,13 @@ public abstract class Spawnable implements ISpawnable {
     protected long entityId;
     protected Set<EntityMetadata> mergedMetadataList = new HashSet<>();
 
-    public Spawnable(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
-        int networkId = attributeSettings.getNetworkId();
-        if (networkId == 0) { //this is special for custom entities, to generate a different network id that doesn't interfere with the current ones
-            int newRuntimeId = NPCFactory.getInstance().getCurrentRuntimeId();
-            attributeSettings.setNetworkId(newRuntimeId);
-            networkId = newRuntimeId;
-        }
-
+    public SpawnAble(AttributeSettings attributeSettings, HumanAttributes humanSettings) {
         this.attributeSettings = attributeSettings;
 
-        if (!isHuman() && !AddEntityPacket.LEGACY_IDS.containsKey(networkId)) { // Hack to add custom entities
+        if (!isHuman() && Entity.getIdentifier(attributeSettings.getNetworkId()) == null) {
             if (attributeSettings.isCustomEntity()) {
                 String minecraftId = attributeSettings.getMinecraftId();
-                String behaviorId = attributeSettings.getMinecraftBehaviorId() == null ? minecraftId : attributeSettings.getMinecraftBehaviorId();
-                CustomEntityUtil.updateStaticPacketCache(networkId, minecraftId, behaviorId);
+                EntityManager.get().registerDefinition(EntityDefinition.builder().identifier(minecraftId).build());
             } else {
                 throw new NPCException("That NETWORK_ID does not exist, if you are using custom entities, put attributeSettings.customEntity(true)");
             }

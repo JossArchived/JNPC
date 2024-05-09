@@ -4,7 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.DataPacket;
-import josscoder.jnpc.entity.spawnable.Spawnable;
+import josscoder.jnpc.entity.spawnable.SpawnAble;
 import josscoder.jnpc.factory.NPCFactory;
 import josscoder.jnpc.settings.AttributeSettings;
 import josscoder.jnpc.settings.HumanAttributes;
@@ -12,7 +12,7 @@ import josscoder.jnpc.settings.TagSettings;
 import lombok.Getter;
 
 @Getter
-public class NPC extends Spawnable {
+public class NPC extends SpawnAble {
 
     private final TagSettings tagSettings;
 

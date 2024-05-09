@@ -9,9 +9,9 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+@Getter
 public class PlaceholderLine extends Line {
 
-    @Getter
     private Function<Player, String> placeholder;
 
     public PlaceholderLine(Function<Player, String > placeholder) {
@@ -45,7 +45,7 @@ public class PlaceholderLine extends Line {
     private void render(Player player) {
         String output = placeholder.apply(player);
 
-        updateMetadataForPlayer(new ArrayList<EntityMetadata>(){{
+        updateMetadataForPlayer(new ArrayList<>() {{
             add(new EntityMetadata().putString(Entity.DATA_NAMETAG, TextFormat.colorize(output)));
         }}, player);
     }

@@ -32,11 +32,6 @@ public class AttributeSettings {
     private String minecraftId;
 
     /**
-     * custom entity behaviorId
-     */
-    private String minecraftBehaviorId;
-
-    /**
      * entity location x,y,z yaw, pitch, headYaw
      */
     @Builder.Default
